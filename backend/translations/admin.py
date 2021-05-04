@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Language
+from .models import Project, Language, Translation
 
 # Project
 class ProjectAdmin(admin.ModelAdmin):
@@ -14,3 +14,11 @@ class LanguageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Language, LanguageAdmin)
+
+
+# Translation
+class TranslationAdmin(admin.ModelAdmin):
+    list_display = ("text", "file_path", "object_path", "language")
+
+
+admin.site.register(Translation, TranslationAdmin)
