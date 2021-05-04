@@ -14,3 +14,8 @@ class Project(models.Model):
         blank=False,
         unique=False,
     )
+
+
+class Language(models.Model):
+    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
+    language_code = models.CharField(max_length=8, null=False, blank=False)
