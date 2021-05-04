@@ -1,6 +1,14 @@
 from django.db import models
 
 
+class Language(models.Model):
+    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
+    language_code = models.CharField(max_length=8, null=False, blank=False, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Project(models.Model):
     name = models.CharField(max_length=64, null=False, blank=False, unique=True)
     repository_url = models.URLField(
@@ -14,11 +22,16 @@ class Project(models.Model):
         blank=False,
         unique=False,
     )
+    languages = models.ManyToManyField(Language)
 
+    class Meta:
+        unique_together = (
+            "repository_url",
+            "locale_files_path",
+        )
 
-class Language(models.Model):
-    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
-    language_code = models.CharField(max_length=8, null=False, blank=False)
+    def __str__(self):
+        return self.name
 
 
 class Translation(models.Model):
@@ -45,3 +58,15 @@ class Translation(models.Model):
     language = models.ForeignKey(
         Language, on_delete=models.CASCADE, null=False, blank=False
     )
+
+    # Joins the file path with the object path to create
+    # the same dotpath format used in i18n software.
+    @property
+    def dotpath(self):
+        return self.object_path
+
+    class Meta:
+        unique_together = (
+            "file_path",
+            "object_path",
+        )
