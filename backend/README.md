@@ -19,3 +19,7 @@ pip install -r requirements.txt
 ## Setup database
 python manage.py migrate
 ```
+
+## Stack
+
+- [Django](https://docs.djangoproject.com/en/3.2/)
