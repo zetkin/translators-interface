@@ -13,4 +13,5 @@ def sync(project: Project):
     GITHUB_ACCESS_TOKEN = config("GITHUB_ACCESS_TOKEN")
     # Access git repo for project
     g = Github(GITHUB_ACCESS_TOKEN)
-    print(g)
+    repo = g.get_repo(project.repository_name)
+    print(repo)

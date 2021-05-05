@@ -11,7 +11,7 @@ admin.site.register(Language, LanguageAdmin)
 
 # Project
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("name", "repository_url")
+    list_display = ("name", "repository_name")
 
 
 admin.site.register(Project, ProjectAdmin)

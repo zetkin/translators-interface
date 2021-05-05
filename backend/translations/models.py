@@ -11,7 +11,8 @@ class Language(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=64, null=False, blank=False, unique=True)
-    repository_url = models.URLField(
+    repository_name = models.CharField(
+        max_length=256,
         null=False,
         blank=False,
         unique=False,
@@ -26,7 +27,7 @@ class Project(models.Model):
 
     class Meta:
         unique_together = (
-            "repository_url",
+            "repository_name",
             "locale_files_path",
         )
 
