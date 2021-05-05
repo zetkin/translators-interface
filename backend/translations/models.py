@@ -63,7 +63,12 @@ class Translation(models.Model):
     # the same dotpath format used in i18n software.
     @property
     def dotpath(self):
-        return self.object_path
+        file_dotpath_parts = self.file_path.split("/")[1:-1]
+        if len(file_dotpath_parts) == 0:
+            return self.object_path
+
+        file_dotpath = ".".join(file_dotpath_parts)
+        return "{}.{}".format(file_dotpath, self.object_path)
 
     class Meta:
         unique_together = (

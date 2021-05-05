@@ -48,4 +48,6 @@ Then navigate to `localhost:8000/admin` and log in with the superuser credential
 
 Dotpaths, (the path that is used in the frontend of a project to find the localisation string, formatted like `homePage.title`) are generated dynamically from the folder and their location within the object in that folder.
 
-The file path should be formatted like this `./path/to/file/se.yaml`. The object path should be formatted like javascript dot notation: `path.to.key`.
+The file path should be formatted like this `./path/to/file/se.yaml`. If the file is in the root directory of the project the path will look like this: `./se.yaml`
+
+The object path should be formatted like javascript dot notation: `path.to.key`.
