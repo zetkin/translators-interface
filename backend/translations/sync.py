@@ -1,11 +1,12 @@
 from decouple import config
-from github import Github
+from github import Github, ContentFile
 
 from .models import Project, Language, Translation
 
 """
-Syncing with the git repo.
-
+Syncing the Translation objects with the git repo for a project.
+This function creates Translation records for every key in a project's
+localisation files for languages that are configured.
 """
 
 
@@ -14,4 +15,17 @@ def sync(project: Project):
     # Access git repo for project
     g = Github(GITHUB_ACCESS_TOKEN)
     repo = g.get_repo(project.repository_name)
-    print(repo)
+    contents = repo.get_contents(project.locale_files_path)
+
+    # Get all files recursively from the repo
+    files = []
+    while contents:
+        file_content = contents.pop(0)
+        if file_content.type == "dir":
+            contents.extend(repo.get_contents(file_content.path))
+        else:
+            files.append(file_content)
+
+    # Loop through files
+
+    # If file matches one of the projects supported languages, parse it
