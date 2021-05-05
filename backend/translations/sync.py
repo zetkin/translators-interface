@@ -7,4 +7,5 @@ Syncing with the git repo.
 
 
 def sync(project: Project):
-    pass
+    # Access git repo for project
+    print(project)
