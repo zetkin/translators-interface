@@ -1,4 +1,5 @@
 import yaml
+from django.db.utils import IntegrityError
 from decouple import config
 from github import Github, ContentFile
 from pandas import json_normalize
@@ -33,6 +34,9 @@ def sync(project: Project):
         relative_filepath = file.path.replace(project.locale_files_path, ".")
         # Get language
         language_code = relative_filepath.split("/")[-1].split(".")[0]
+        # Get commit date for file
+        commit = repo.get_commits(path=file.path)[0].commit
+        commit_date = commit.committer.date
         # If language in the project languages
         if language_code in [lang.language_code for lang in project.languages.all()]:
             file_object = yaml.safe_load(file.decoded_content)
@@ -43,12 +47,17 @@ def sync(project: Project):
             for key, value in flat_file_object.items():
                 if isinstance(value, str):
                     language = Language.objects.get(language_code=language_code)
-                    translation = Translation.objects.create(
-                        text=value,
-                        author="",
-                        from_repository=True,
-                        file_path=relative_filepath,
-                        object_path=key,
-                        project=project,
-                        language=language,
-                    )
+                    try:
+                        translation = Translation.objects.create(
+                            text=value,
+                            author="",
+                            from_repository=True,
+                            file_path=relative_filepath,
+                            object_path=key,
+                            project=project,
+                            language=language,
+                            created_at=commit_date,
+                        )
+                    # If translation with file_path, object_path & created_at exists
+                    except IntegrityError:
+                        pass

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 from .utils import build_dotpath
 
 
@@ -40,7 +41,7 @@ class Translation(models.Model):
     text = models.TextField(null=False, blank=False, unique=False)
     author = models.CharField(max_length=64, blank=False, null=False)
     from_repository = models.BooleanField(null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(null=False, blank=False, default=now)
     # Relationship to repo
     file_path = models.CharField(
         max_length=128,
