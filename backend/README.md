@@ -41,3 +41,11 @@ python manage.py runserver
 ```
 
 Then navigate to `localhost:8000/admin` and log in with the superuser credentials.
+
+### Translation Sync
+
+#### Dotpath generation
+
+Dotpaths, (the path that is used in the frontend of a project to find the localisation string, formatted like `homePage.title`) are generated dynamically from the folder and their location within the object in that folder.
+
+The file path should be formatted like this `./path/to/file/se.yaml`. The object path should be formatted like javascript dot notation: `path.to.key`.
