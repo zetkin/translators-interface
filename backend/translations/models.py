@@ -40,6 +40,7 @@ class Translation(models.Model):
     text = models.TextField(null=False, blank=False, unique=False)
     author = models.CharField(max_length=64, blank=False, null=False)
     from_repository = models.BooleanField(null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     # Relationship to repo
     file_path = models.CharField(
         max_length=128,
@@ -68,7 +69,4 @@ class Translation(models.Model):
         return build_dotpath(self.file_path, self.object_path)
 
     class Meta:
-        unique_together = (
-            "file_path",
-            "object_path",
-        )
+        unique_together = ("file_path", "object_path", "created_at")

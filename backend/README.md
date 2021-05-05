@@ -45,14 +45,12 @@ Then navigate to `localhost:8000/admin` and log in with the superuser credential
 
 ### Translation Sync
 
-#### Dotpath generation
-
-Dotpaths, (the path that is used in the frontend of a project to find the localisation string, formatted like `homePage.title`) are generated dynamically from the folder and their location within the object in that folder.
-
-The file path should be formatted like this `./path/to/file/se.yaml`. If the file is in the root directory of the project the path will look like this: `./se.yaml`
-
-The object path should be formatted like javascript dot notation: `path.to.key`.
+To trigger a sync with a django management command, use `python manage.py syncproject <project_name>`. This action is also available in the admin interface.
 
 #### Accessing Github
 
 Accessing github requires an access token, which must be set in a `.env` file. The key for the access token is `GITHUB_ACCESS_TOKEN`.
+
+#### Dotpath generation
+
+Dotpaths, (the path that is used in the frontend of a project to find the localisation string, formatted like `homePage.title`) are generated dynamically from the folder and their location within the object in that folder.
