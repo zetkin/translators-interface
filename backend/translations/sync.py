@@ -1,3 +1,4 @@
+import yaml
 from decouple import config
 from github import Github, ContentFile
 
@@ -27,5 +28,7 @@ def sync(project: Project):
             files.append(file_content)
 
     # Loop through files
+    for file in files:
+        print(file.decoded_content)
 
     # If file matches one of the projects supported languages, parse it

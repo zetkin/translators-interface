@@ -1,17 +1,20 @@
 from django.test import TestCase
+import logging
 from translations.models import Translation, Language, Project
 from translations.sync import sync
 
 
 class SyncTestCase(TestCase):
     def setUp(self):
+        logging.disable(logging.CRITICAL)
+
         english = Language.objects.create(name="English", language_code="en")
         swedish = Language.objects.create(name="Swedish", language_code="se")
 
         self.project = Project.objects.create(
             name="Test Git Project",
             repository_name="zetkin/translators-interface",
-            locale_files_path="backend/translations/tests/mock_locale",
+            locale_files_path="backend/translations/tests/mock_locale_files",
         )
         self.project.languages.add(english)
         self.project.languages.add(swedish)
