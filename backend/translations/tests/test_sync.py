@@ -9,7 +9,7 @@ class SyncTestCase(TestCase):
         logging.disable(logging.CRITICAL)
 
         english = Language.objects.create(name="English", language_code="en")
-        swedish = Language.objects.create(name="Swedish", language_code="se")
+        swedish = Language.objects.create(name="Swedish", language_code="sv")
 
         self.project = Project.objects.create(
             name="Test Git Project",
@@ -23,7 +23,7 @@ class SyncTestCase(TestCase):
     def test_create_translations_from_git(self):
         sync(self.project)
         # Check 8 Swedish translations created
-        swedish_translations = Translation.objects.filter(language__language_code="se")
+        swedish_translations = Translation.objects.filter(language__language_code="sv")
         self.assertEqual(len(swedish_translations), 8)
         # Check 8 English translations created
         english_translations = Translation.objects.filter(language__language_code="en")
@@ -41,8 +41,8 @@ class SyncTestCase(TestCase):
         self.assertEqual(english_home_page_header_title.text, "Edit translations here")
 
         swedish_home_page_header_title = Translation.objects.get(
-            language__language_code="se",
-            file_path="./home_page/se.yaml",
+            language__language_code="sv",
+            file_path="./home_page/sv.yaml",
             object_path="header.title",
         )
         self.assertEqual(
