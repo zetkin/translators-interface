@@ -1,7 +1,7 @@
-site_name: "Translators Interface"
+site_name: "Översättargränssnitt"
 common:
-  error: "There was an error"
-  warning: "Be careful!"
+  error: "Det uppstod ett fel"
+  warning: "Var försiktig!"
   success:
-    form_submit: "Form successfully submitted"
-    update_info: "Information successfully updated"
+    form_submit: "Formuläret har skickats in"
+    update_info: "Information uppdaterad"

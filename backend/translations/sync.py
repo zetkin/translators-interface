@@ -1,6 +1,7 @@
 import yaml
 from decouple import config
 from github import Github, ContentFile
+from pandas import json_normalize
 
 from .models import Project, Language, Translation
 
@@ -27,8 +28,27 @@ def sync(project: Project):
         else:
             files.append(file_content)
 
-    # Loop through files
     for file in files:
-        print(file.decoded_content)
-
-    # If file matches one of the projects supported languages, parse it
+        # The file path relative to the locale files directory for the project
+        relative_filepath = file.path.replace(project.locale_files_path, ".")
+        # Get language
+        language_code = relative_filepath.split("/")[-1].split(".")[0]
+        # If language in the project languages
+        if language_code in [lang.language_code for lang in project.languages.all()]:
+            file_object = yaml.safe_load(file.decoded_content)
+            flat_file_object = json_normalize(file_object, sep=".").to_dict(
+                orient="records"
+            )[0]
+            # Loop through each translation key/value pair and create translation object
+            for key, value in flat_file_object.items():
+                if isinstance(value, str):
+                    language = Language.objects.get(language_code=language_code)
+                    translation = Translation.objects.create(
+                        text=value,
+                        author="",
+                        from_repository=True,
+                        file_path=relative_filepath,
+                        object_path=key,
+                        project=project,
+                        language=language,
+                    )

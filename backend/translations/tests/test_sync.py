@@ -22,7 +22,32 @@ class SyncTestCase(TestCase):
 
     def test_create_translations_from_git(self):
         sync(self.project)
-        self.assertEqual(1, 2)
+        # Check 8 Swedish translations created
+        swedish_translations = Translation.objects.filter(language__language_code="se")
+        self.assertEqual(len(swedish_translations), 8)
+        # Check 8 English translations created
+        english_translations = Translation.objects.filter(language__language_code="en")
+        self.assertEqual(len(english_translations), 8)
 
+        # Check a couple dotpath
+        english_home_page_header_title = Translation.objects.get(
+            language__language_code="en",
+            file_path="./home_page/en.yaml",
+            object_path="header.title",
+        )
+        self.assertEqual(
+            english_home_page_header_title.dotpath, "home_page.header.title"
+        )
+        self.assertEqual(english_home_page_header_title.text, "Edit translations here")
 
-# Should create english translations
+        swedish_home_page_header_title = Translation.objects.get(
+            language__language_code="se",
+            file_path="./home_page/se.yaml",
+            object_path="header.title",
+        )
+        self.assertEqual(
+            swedish_home_page_header_title.dotpath, "home_page.header.title"
+        )
+        self.assertEqual(
+            swedish_home_page_header_title.text, "Redigera översättningar här"
+        )
