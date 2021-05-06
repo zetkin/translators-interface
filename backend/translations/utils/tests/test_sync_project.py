@@ -1,7 +1,7 @@
 from django.test import TestCase
 import logging
 from translations.models import Translation, Language, Project
-from translations.sync import sync
+from translations.utils.sync_project import sync_project
 
 
 class SyncTestCase(TestCase):
@@ -21,7 +21,7 @@ class SyncTestCase(TestCase):
         self.project.save()
 
     def test_create_translations_from_git(self):
-        sync(self.project)
+        sync_project(self.project)
         # Check 8 Swedish translations created
         swedish_translations = Translation.objects.filter(language__language_code="sv")
         self.assertEqual(len(swedish_translations), 8)
