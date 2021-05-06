@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from translations.models import Project
-from translations.sync import sync
+from translations.utils.sync_project import sync_project
 
 
 class Command(BaseCommand):
@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             project = Project.objects.get(name=options["project"])
-            sync(project)
+            sync_project(project)
             self.stdout.write(
                 self.style.SUCCESS('Successfully synced project "%s"' % project.name)
             )

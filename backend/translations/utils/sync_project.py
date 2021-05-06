@@ -4,7 +4,7 @@ from decouple import config
 from github import Github, ContentFile
 from pandas import json_normalize
 
-from .models import Project, Language, Translation
+from translations.models import Project, Language, Translation
 
 """
 Syncing the Translation objects with the git repo for a project.
@@ -13,7 +13,7 @@ localisation files for languages that are configured.
 """
 
 
-def sync(project: Project):
+def sync_project(project: Project):
     GITHUB_ACCESS_TOKEN = config("GITHUB_ACCESS_TOKEN")
     # Access git repo for project
     g = Github(GITHUB_ACCESS_TOKEN)

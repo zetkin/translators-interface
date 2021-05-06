@@ -14,7 +14,7 @@ class SyncTestCase(TestCase):
         self.project = Project.objects.create(
             name="Test Git Project",
             repository_name="zetkin/translators-interface",
-            locale_files_path="backend/translations/tests/mock_locale_files",
+            locale_files_path="backend/translations/utils/tests/mock_locale_files",
         )
         self.project.languages.add(english)
         self.project.languages.add(swedish)

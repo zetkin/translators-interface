@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-from .utils import build_dotpath
+from .utils.build_dotpath import build_dotpath
 
 
 class Language(models.Model):

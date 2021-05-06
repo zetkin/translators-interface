@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from .models import Project, Language, Translation
-from .sync import sync
+from .utils.sync_project import sync_project
 
 # Language
 class LanguageAdmin(admin.ModelAdmin):
@@ -19,7 +19,7 @@ class ProjectAdmin(admin.ModelAdmin):
     @admin.action(description="Sync translations")
     def sync(self, request, queryset):
         for project in queryset.all():
-            sync(project)
+            sync_project(project)
         self.message_user(request, "Sync successful", messages.SUCCESS)
 
 
