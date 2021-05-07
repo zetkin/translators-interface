@@ -1,22 +1,25 @@
 from django.test import TestCase
 from translations.models import Translation, Language, Project
+from translations.models.factories import (
+    TranslationFactory,
+    LanguageFactory,
+    ProjectFactory,
+)
 
 # Test that dotpath is correctly generated for a translation
 class DotpathBuildingTestCase(TestCase):
     def setUp(self):
-        language = Language.objects.create(name="Dutch", language_code="nl")
-        project = Project.objects.create(name="Seinfeld Season 1")
-        project.languages.add(language)
-        project.save()
+        dutch = LanguageFactory(name="Dutch", language_code="nl")
+        project = ProjectFactory(name="Seinfeld Season 1", languages=[dutch])
 
-        self.translation = Translation.objects.create(
+        self.translation = TranslationFactory(
             text="I need to see Elaine Benes' chart.",
             author="Martin van Nostrand",
             from_repository=True,
             file_path="./nl.yaml",
             object_path="intro",
             project=project,
-            language=language,
+            language=dutch,
         )
 
     def test_root_path_single_nested_key(self):

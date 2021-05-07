@@ -1,6 +1,11 @@
 from django.test import TestCase
 import logging
 from translations.models import Translation, Language, Project
+from translations.models.factories import (
+    TranslationFactory,
+    ProjectFactory,
+    LanguageFactory,
+)
 from translations.utils.sync_project import sync_project
 
 
@@ -8,17 +13,15 @@ class SyncTestCase(TestCase):
     def setUp(self):
         logging.disable(logging.CRITICAL)
 
-        english = Language.objects.create(name="English", language_code="en")
-        swedish = Language.objects.create(name="Swedish", language_code="sv")
+        english = LanguageFactory(name="English", language_code="en")
+        swedish = LanguageFactory(name="Swedish", language_code="sv")
 
-        self.project = Project.objects.create(
+        self.project = ProjectFactory(
             name="Test Git Project",
             repository_name="zetkin/translators-interface",
             locale_files_path="backend/translations/utils/tests/mock_locale_files",
+            languages=(english, swedish),
         )
-        self.project.languages.add(english)
-        self.project.languages.add(swedish)
-        self.project.save()
 
     def test_create_translations_from_git(self):
         sync_project(self.project)
