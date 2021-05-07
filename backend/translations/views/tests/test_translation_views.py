@@ -41,7 +41,39 @@ class TestTranslationViews(APITestCase):
         # Half of project 1's translations are in English
         self.assertEqual(len(response.data), 50)
 
-    # def test_success_retrieve_project(self):
-    #     response = self.client.get("/projects/{}/".format(self.project1.id))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(response.data["name"], "Test Git Project")
+    def test_fail_put_patch_delete(self):
+        translation = TranslationFactory()
+
+        put_response = self.client.put(
+            "/translations/{}/".format(translation.id), {"author": "new author"}
+        )
+        self.assertEqual(put_response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        patch_response = self.client.patch(
+            "/translations/{}/".format(translation.id), {"author": "new author"}
+        )
+        self.assertEqual(patch_response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        delete_response = self.client.delete(
+            "/translations/{}/".format(translation.id), {"author": "new author"}
+        )
+        self.assertEqual(
+            delete_response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED
+        )
+
+    def test_success_create_translation(self):
+        post_response = self.client.post(
+            "/translations/",
+            {
+                "text": "example text",
+                "author": "new author",
+                "from_repository": False,
+                "file_path": "./en.yaml",
+                "object_path": "path.to.key",
+                "project": self.project1.id,
+                "language_id": self.english.id,
+            },
+            format="json",
+        )
+
+        self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
