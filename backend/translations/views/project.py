@@ -1,20 +1,6 @@
-from rest_framework import viewsets, serializers
+from rest_framework import viewsets
 
-from translations.models import Project, Language
-
-
-class LanguageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Language
-        fields = "__all__"
-
-
-class ProjectSerializer(serializers.ModelSerializer):
-    languages = LanguageSerializer(read_only=True, many=True)
-
-    class Meta:
-        model = Project
-        fields = "__all__"
+from translations.models import Project, ProjectSerializer
 
 
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):

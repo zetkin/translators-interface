@@ -1,42 +1,30 @@
+import logging
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 
 from translations.models import Translation, Language, Project
 
+from .factories import LanguageFactory, ProjectFactory, TranslationFactory
+
 
 class TestTranslationViews(APITestCase):
     def setUp(self):
-        english = Language.objects.create(name="English", language_code="en")
-        swedish = Language.objects.create(name="Swedish", language_code="sv")
-        self.project1 = Project.objects.create(
-            name="Test Git Project",
-            repository_name="zetkin/translators-interface",
-            locale_files_path="backend/translations/tests/mock_locale_files",
-        )
-        self.project1.languages.add(english)
-        self.project1.languages.add(swedish)
-        self.project1.save()
+        english = LanguageFactory(name="English", language_code="en")
+        swedish = LanguageFactory(name="Swedish", language_code="sv")
 
-        self.project2 = Project.objects.create(
-            name="Second Test Git Project",
-            repository_name="zetkin/fake-app",
-            locale_files_path="backend/translations/tests/mock_locale_files",
-        )
-        self.project2.languages.add(english)
-        self.project2.languages.add(swedish)
-        self.project2.save()
+        self.project1 = ProjectFactory(languages=(english, swedish))
+        self.project2 = ProjectFactory(languages=(english, swedish))
 
-        # Translations for project1
-
-        # Translations for project2
+        TranslationFactory.create_batch(size=100, project=self.project1)
+        TranslationFactory.create_batch(size=100, project=self.project2)
 
         self.client = APIClient()
 
     def test_success_list_all_translations(self):
         response = self.client.get("/translations/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 200)
 
     # def test_success_retrieve_project(self):
     #     response = self.client.get("/projects/{}/".format(self.project1.id))

@@ -1,9 +1,6 @@
-from rest_framework import viewsets, serializers
+from rest_framework import viewsets
 
-from translations.models import Project, Language, Translation
-
-# class TranslationSerializer(serializers.ModelSerializer):
-#     Meta
+from translations.models import Translation, TranslationSerializer
 
 
 class TranslationViewSet(viewsets.ReadOnlyModelViewSet):
@@ -13,4 +10,4 @@ class TranslationViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     queryset = Translation.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = TranslationSerializer

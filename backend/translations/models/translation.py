@@ -1,40 +1,11 @@
 from django.db import models
 from django.utils.timezone import now
-from .utils.build_dotpath import build_dotpath
+from rest_framework import serializers
 
+from translations.utils.build_dotpath import build_dotpath
 
-class Language(models.Model):
-    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
-    language_code = models.CharField(max_length=8, null=False, blank=False, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Project(models.Model):
-    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
-    repository_name = models.CharField(
-        max_length=256,
-        null=False,
-        blank=False,
-        unique=False,
-    )
-    locale_files_path = models.CharField(
-        max_length=128,
-        null=False,
-        blank=False,
-        unique=False,
-    )
-    languages = models.ManyToManyField(Language)
-
-    class Meta:
-        unique_together = (
-            "repository_name",
-            "locale_files_path",
-        )
-
-    def __str__(self):
-        return self.name
+from .language import Language, LanguageSerializer
+from .project import Project, ProjectSerializer
 
 
 class Translation(models.Model):
@@ -71,3 +42,12 @@ class Translation(models.Model):
 
     class Meta:
         unique_together = ("file_path", "object_path", "created_at")
+
+
+class TranslationSerializer(serializers.ModelSerializer):
+    language = LanguageSerializer(read_only=True)
+    project = ProjectSerializer(read_only=True)
+
+    class Meta:
+        model = Translation
+        fields = "__all__"
