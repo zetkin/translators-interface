@@ -54,3 +54,7 @@ Accessing github requires an access token, which must be set in a `.env` file. T
 #### Dotpath generation
 
 Dotpaths, (the path that is used in the frontend of a project to find the localisation string, formatted like `homePage.title`) are generated dynamically from the folder and their location within the object in that folder.
+
+### Public API
+
+The public API documentation is accessible by navigating to the index page of the project.
