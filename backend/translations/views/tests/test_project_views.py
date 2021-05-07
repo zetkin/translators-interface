@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase, APIClient
 
 from translations.models import Translation, Language, Project
 
-from .factories import LanguageFactory, ProjectFactory
+from translations.models.factories import LanguageFactory, ProjectFactory
 
 
 class TestProjectViews(APITestCase):
