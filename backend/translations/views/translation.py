@@ -12,4 +12,4 @@ class TranslationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Translation.objects.all()
     serializer_class = TranslationSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["language", "project", "dotpath", "from_repository"]
+    filterset_fields = ["language", "project", "from_repository"]
