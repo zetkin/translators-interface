@@ -45,9 +45,15 @@ class Translation(models.Model):
 
 
 class TranslationSerializer(serializers.ModelSerializer):
-    language = LanguageSerializer(read_only=True)
-    project = ProjectSerializer(read_only=True)
+    """
+    Get request returns the entire language object, but post request takes the language id
+    """
 
     class Meta:
         model = Translation
         fields = "__all__"
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response["language"] = LanguageSerializer(instance.language).data
+        return response
