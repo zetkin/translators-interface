@@ -11,11 +11,12 @@
 
 # dependencies
 **/node_modules
+**/@babel
 **/.pnp
 .pnp.js
 
 # testing
-**//coverage
+**/coverage
 
 # next.js
 **/.next/
