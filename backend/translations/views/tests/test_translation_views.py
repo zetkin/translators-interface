@@ -71,7 +71,7 @@ class TestTranslationViews(APITestCase):
                 "file_path": "./en.yaml",
                 "object_path": "path.to.key",
                 "project": self.project1.id,
-                "language_id": self.english.id,
+                "language": self.english.id,
             },
             format="json",
         )

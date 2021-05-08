@@ -2,6 +2,6 @@
 
 Monorepo for the full stack implementation of the Zetkin Translator Interface.
 
-[Backend](./backend)
+[Django Backend](./backend)
 
-[Frontend TBA]
+[React Next Frontend](./frontend)
