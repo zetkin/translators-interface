@@ -41,7 +41,12 @@ class Translation(models.Model):
         return build_dotpath(self.file_path, self.object_path)
 
     class Meta:
-        unique_together = ("file_path", "object_path", "created_at")
+        unique_together = (
+            "file_path",
+            "object_path",
+            "created_at",
+            "project",
+        )
 
 
 class TranslationSerializer(serializers.ModelSerializer):
