@@ -13,7 +13,7 @@ class TranslationViewSet(
     """
     API endpoint that allows list, retrieve, and create actions for the Translation model.
 
-    Supports filtering on the language, project, and from_repository. Also accept query parameter "latest" which takes a boolean, and if true it only returns one of each
+    Supports filtering on the language, project, and from_repository. Also accept query parameter "latest" which takes a boolean, and if true it only returns one of each translation for a dotpath and language.
     """
 
     queryset = Translation.objects.order_by("-created_at")

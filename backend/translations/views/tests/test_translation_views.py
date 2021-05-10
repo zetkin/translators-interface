@@ -76,7 +76,6 @@ class TestTranslationViews(APITestCase):
             format="json",
         )
 
-        print(post_response.data)
         self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
 
 

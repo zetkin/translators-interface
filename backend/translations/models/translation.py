@@ -55,6 +55,8 @@ class TranslationSerializer(serializers.ModelSerializer):
     Get request returns the entire language object, but post request takes the language id
     """
 
+    dotpath = serializers.ReadOnlyField()
+
     class Meta:
         model = Translation
         fields = "__all__"
