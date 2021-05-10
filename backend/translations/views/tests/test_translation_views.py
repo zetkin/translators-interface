@@ -41,11 +41,6 @@ class TestTranslationViews(APITestCase):
         # Half of project 1's translations are in English
         self.assertEqual(len(response.data), 50)
 
-    def test_success_list_latest_translation_for_dotpath(self):
-        response = self.client.get("/translations/")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 200)
-
     def test_fail_put_patch_delete(self):
         translation = TranslationFactory()
 
@@ -83,3 +78,37 @@ class TestTranslationViews(APITestCase):
 
         print(post_response.data)
         self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
+
+
+class TestLatestTranslationViews(APITestCase):
+    def setUp(self):
+        logging.disable(logging.CRITICAL)
+
+        self.english = LanguageFactory(name="English", language_code="en")
+        self.swedish = LanguageFactory(name="Swedish", language_code="sv")
+
+        self.project1 = ProjectFactory(languages=(self.english, self.swedish))
+
+        # 5 translations for p1 for same file and dotpath for each language
+        TranslationFactory.create_batch(
+            size=5,
+            project=self.project1,
+            file_path="./homePage/en.yaml",
+            object_path="title",
+            language=self.english,
+        )
+        TranslationFactory.create_batch(
+            size=5,
+            project=self.project1,
+            file_path="./homePage/sv.yaml",
+            object_path="title",
+            language=self.swedish,
+        )
+
+        self.client = APIClient()
+
+    def test_success_list_latest_translation_for_dotpath(self):
+        response = self.client.get("/translations/?latest=True")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)

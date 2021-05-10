@@ -26,6 +26,7 @@ class Translation(models.Model):
         blank=False,
         unique=False,
     )
+
     # Links to project and language
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, null=False, blank=False
