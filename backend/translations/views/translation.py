@@ -14,7 +14,7 @@ class TranslationViewSet(
     API endpoint that allows list, retrieve, and create actions for the Translation model.
     """
 
-    queryset = Translation.objects.all()
+    queryset = Translation.objects.order_by("-created_at")
     serializer_class = TranslationSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["language", "project", "from_repository"]

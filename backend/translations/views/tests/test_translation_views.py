@@ -41,6 +41,11 @@ class TestTranslationViews(APITestCase):
         # Half of project 1's translations are in English
         self.assertEqual(len(response.data), 50)
 
+    def test_success_list_latest_translation_for_dotpath(self):
+        response = self.client.get("/translations/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 200)
+
     def test_fail_put_patch_delete(self):
         translation = TranslationFactory()
 
