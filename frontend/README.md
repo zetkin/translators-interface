@@ -6,9 +6,10 @@
 
 ## Stack
 
+- [React.js]()
 - [Next.js](https://nextjs.org/)
 - [React Material UI]() Set up for Next.js using [this example](https://github.com/mui-org/material-ui/tree/master/examples/nextjs)
-- React Query
+- [React Query]()
 
 ## Setup
 
