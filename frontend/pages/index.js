@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import Container from '@material-ui/core/Container'
+import { Typography, Box } from '@material-ui/core'
 
 // Index Page - List of projects
 
@@ -18,7 +19,9 @@ export default function Home() {
 
       <main>
         <Container>
-          <h1>Zetkin Translators Interface</h1>
+          <Box textAlign="center">
+            <Typography variant="h2">Projects</Typography>
+          </Box>
         </Container>
       </main>
     </div>
