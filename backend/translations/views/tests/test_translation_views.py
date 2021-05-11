@@ -107,7 +107,13 @@ class TestLatestTranslationViews(APITestCase):
         self.client = APIClient()
 
     def test_success_list_latest_translation_for_dotpath(self):
-        response = self.client.get("/translations/?latest=True")
+        response = self.client.get("/translations/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
+
+    def test_success_list_all_translation_for_dotpath(self):
+        response = self.client.get("/translations/?history=True")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 10)
