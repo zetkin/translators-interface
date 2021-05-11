@@ -6,18 +6,14 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { AppBar, Toolbar, Typography, InputBase } from '@material-ui/core'
 
 import theme from '../styles/theme'
+import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../src/constants'
+import useLocalStorage from '../src/hooks/useLocalStorage'
 
 export default function MyApp(props) {
   const { Component, pageProps } = props
-  // Handle Menu State
-  const [anchorEl, setAnchorEl] = React.useState(null)
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
+  const [authorName, setAuthorName] = useLocalStorage(
+    AUTHOR_NAME_LOCAL_STORAGE_KEY
+  )
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -42,6 +38,7 @@ export default function MyApp(props) {
         <AppBar position="static">
           <Toolbar variant="dense" style={{ justifyContent: 'space-between' }}>
             <Typography variant="h6">Zetkin Translators Interface</Typography>
+            {/* Username Field */}
             <div
               style={{
                 backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -54,6 +51,8 @@ export default function MyApp(props) {
                 variant="outlined"
                 placeholder="Your name..."
                 style={{ color: 'inherit' }}
+                value={authorName}
+                onChange={(e) => setAuthorName(e.target.value)}
               />
             </div>
           </Toolbar>
