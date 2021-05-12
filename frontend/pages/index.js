@@ -1,11 +1,22 @@
 import Head from 'next/head'
 
 import Container from '@material-ui/core/Container'
-import { Typography, Box } from '@material-ui/core'
+import { Typography, Box, Card, CardContent, Chip } from '@material-ui/core'
+
+import { useQuery } from 'react-query'
+
+import { getProjects } from '../api/projects'
 
 // Index Page - List of projects
 
-export default function Home() {
+export async function getStaticProps() {
+  // Fetch projects
+  const projects = await getProjects()
+
+  return { props: { projects } }
+}
+
+export default function Home(props) {
   return (
     <div>
       <Head>
@@ -22,6 +33,43 @@ export default function Home() {
           <Box textAlign="center">
             <Typography variant="h2">Projects</Typography>
           </Box>
+
+          {/* Projects */}
+          {props.projects.map((project) => {
+            return (
+              <Card key={project.id}>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h6"
+                    component="h4"
+                    display="inline-block"
+                  >
+                    {project.name}
+                  </Typography>
+
+                  <Typography gutterBottom variant="body" component="p">
+                    <a
+                      href={`https://www.github.com/${project.repository_name}`}
+                    >
+                      {project.repository_name}
+                    </a>
+                  </Typography>
+
+                  <Box display="flex">
+                    {project.languages.map((language) => {
+                      return (
+                        <Chip
+                          label={language.name}
+                          style={{ marginRight: 5 }}
+                        ></Chip>
+                      )
+                    })}
+                  </Box>
+                </CardContent>
+              </Card>
+            )
+          })}
         </Container>
       </main>
     </div>
