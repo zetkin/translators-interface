@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 
 import Container from '@material-ui/core/Container'
 import { Typography, Box, Card, CardContent, Chip } from '@material-ui/core'
@@ -45,7 +46,7 @@ export default function Home(props) {
                     component="h4"
                     display="inline-block"
                   >
-                    {project.name}
+                    <Link href={`/projects/${project.id}`}>{project.name}</Link>
                   </Typography>
 
                   <Typography gutterBottom variant="body" component="p">
