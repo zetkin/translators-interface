@@ -46,7 +46,14 @@ export default function Home(props) {
                     component="h4"
                     display="inline-block"
                   >
-                    <Link href={`/projects/${project.id}`}>{project.name}</Link>
+                    <Link
+                      href={{
+                        pathname: '/projects/[id]',
+                        query: { id: project.id },
+                      }}
+                    >
+                      {project.name}
+                    </Link>
                   </Typography>
 
                   <Typography gutterBottom variant="body" component="p">

@@ -5,5 +5,5 @@ export const getProjects = async () => {
 }
 
 export const getProject = async (projectId) => {
-  return fetchWrapper({ url: `http://localhost:8000/projects/${projectId}` })
+  return fetchWrapper({ url: `http://localhost:8000/projects/${projectId}/` })
 }
