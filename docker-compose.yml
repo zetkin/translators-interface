@@ -13,4 +13,7 @@ services:
         ports:
             - 3080:3000
         volumes:
-            - ./frontend:/var/app
+            - ./frontend/pages:/var/app/pages
+            - ./frontend/public:/var/app/public
+            - ./frontend/src:/var/app/src
+            - ./frontend/styles:/var/app/styles
