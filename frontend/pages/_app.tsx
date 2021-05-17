@@ -11,7 +11,7 @@ import useLocalStorage from '../src/hooks/useLocalStorage'
 
 export default function MyApp(props) {
   const { Component, pageProps } = props
-  const [authorName, setAuthorName] = useLocalStorage(
+  const [authorName, setAuthorName] = useLocalStorage<string>(
     AUTHOR_NAME_LOCAL_STORAGE_KEY
   )
 
