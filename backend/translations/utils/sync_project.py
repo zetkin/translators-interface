@@ -1,7 +1,7 @@
 import yaml
 from django.db.utils import IntegrityError
 from decouple import config
-from github import Github, ContentFile
+from github import Github
 from pandas import json_normalize
 
 from translations.models import Project, Language, Translation
