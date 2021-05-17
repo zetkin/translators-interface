@@ -1,5 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
+import type { AppProps } from 'next/app'
 
 import { ThemeProvider, fade } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -9,8 +10,7 @@ import theme from '../styles/theme'
 import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../src/constants'
 import useLocalStorage from '../src/hooks/useLocalStorage'
 
-export default function MyApp(props) {
-  const { Component, pageProps } = props
+export default function MyApp({ Component, pageProps }: AppProps) {
   const [authorName, setAuthorName] = useLocalStorage<string>(
     AUTHOR_NAME_LOCAL_STORAGE_KEY
   )
