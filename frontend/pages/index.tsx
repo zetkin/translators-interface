@@ -8,7 +8,7 @@ import { Project } from '../src/global.types'
 import { getProjects } from '../src/api/projects'
 
 /**
- * Index Page - List Projects
+ * Home Page - Lists Projects
  */
 
 interface StaticProps {

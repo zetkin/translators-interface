@@ -12,6 +12,11 @@ import {
 import { Project } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
 
+
+/**
+ * Project Page - List project's languages
+ */
+
 interface StaticProps {
   project: Project
 }
