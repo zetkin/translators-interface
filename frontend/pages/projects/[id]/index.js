@@ -4,21 +4,24 @@ import Link from 'next/link'
 import Container from '@material-ui/core/Container'
 import { Typography, Box, Card, CardContent, Chip } from '@material-ui/core'
 
-import { useQuery } from 'react-query'
+import { getProject, getProjects } from '../../../src/api/projects'
 
-import { getProject } from '../../../api/projects'
+export async function getStaticPaths() {
+  const projects = await getProjects()
 
-// Index Page - List of projects
-
-export async function getStaticProps(props) {
-  console.log(props)
-  // Fetch projects
-  const projects = await getProject()
-
-  return { props: { projects } }
+  return {
+    paths: projects?.map(({ id }) => `/projects/${id}`) ?? [],
+    fallback: true,
+  }
 }
 
-export default function ProjectPage(props) {
+export async function getStaticProps({ params }) {
+  const project = await getProject(params.id)
+  return { props: { project } }
+}
+
+export default function ProjectPage({ project }) {
+  console.log(project)
   return (
     <div>
       <Head>
@@ -30,7 +33,30 @@ export default function ProjectPage(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main></main>
+      <main>
+        {/* Projects */}
+        {project.languages.map((language) => {
+          return (
+            <Card key={language.id}>
+              <CardContent>
+                <Typography gutterBottom variant="h6" component="h4">
+                  <Link
+                    href={{
+                      pathname: '/projects/[id]/[language_code]',
+                      query: {
+                        id: project.id,
+                        language_code: project.language_code,
+                      },
+                    }}
+                  >
+                    {language.name}
+                  </Link>
+                </Typography>
+              </CardContent>
+            </Card>
+          )
+        })}
+      </main>
     </div>
   )
 }

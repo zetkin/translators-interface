@@ -1,19 +1,17 @@
+import { GetStaticPropsResult } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
 import Container from '@material-ui/core/Container'
 import { Typography, Box, Card, CardContent, Chip } from '@material-ui/core'
 
-import { useQuery } from 'react-query'
+import { Project } from '../src/global.types'
+import { getProjects } from '../src/api/projects'
 
-import { getProjects } from '../api/projects'
+// Index Page - List Projects
 
-// Index Page - List of projects
-
-export async function getStaticProps() {
-  // Fetch projects
+export async function getStaticProps(): Promise<GetStaticPropsResult<{projects: Project[]}>> {
   const projects = await getProjects()
-
   return { props: { projects } }
 }
 
@@ -44,7 +42,6 @@ export default function Home(props) {
                     gutterBottom
                     variant="h6"
                     component="h4"
-                    display="inline-block"
                   >
                     <Link
                       href={{
@@ -56,7 +53,7 @@ export default function Home(props) {
                     </Link>
                   </Typography>
 
-                  <Typography gutterBottom variant="body" component="p">
+                  <Typography gutterBottom component="p">
                     <a
                       href={`https://www.github.com/${project.repository_name}`}
                     >

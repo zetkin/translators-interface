@@ -48,7 +48,6 @@ export default function MyApp(props) {
               }}
             >
               <InputBase
-                variant="outlined"
                 placeholder="Your name..."
                 style={{ color: 'inherit' }}
                 value={authorName}
