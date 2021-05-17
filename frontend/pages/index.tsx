@@ -1,21 +1,24 @@
-import { GetStaticPropsResult } from 'next'
+import { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import Container from '@material-ui/core/Container'
-import { Typography, Box, Card, CardContent, Chip } from '@material-ui/core'
+import { Container, Typography, Box, Card, CardContent, Chip } from '@material-ui/core'
 
 import { Project } from '../src/global.types'
 import { getProjects } from '../src/api/projects'
 
-// Index Page - List Projects
+/**
+ * Index Page - List Projects
+ */
 
-export async function getStaticProps(): Promise<GetStaticPropsResult<{projects: Project[]}>> {
+interface StaticProps {projects: Project[]}
+
+export const getStaticProps: GetStaticProps<StaticProps> = async ()=> {
   const projects = await getProjects()
   return { props: { projects } }
 }
 
-export default function Home(props) {
+const Home: NextPage<StaticProps> = ({ projects }) => {
   return (
     <div>
       <Head>
@@ -34,7 +37,7 @@ export default function Home(props) {
           </Box>
 
           {/* Projects */}
-          {props.projects.map((project) => {
+          {projects.map((project) => {
             return (
               <Card key={project.id}>
                 <CardContent>
@@ -80,3 +83,5 @@ export default function Home(props) {
     </div>
   )
 }
+
+export default Home

@@ -3,9 +3,9 @@
 export interface Project {
   id: number
   name: string
-  reporsitory_name: string
+  repository_name: string
   locale_files_path: string
-  language: Language[]
+  languages: Language[]
 }
 
 export interface Language {
