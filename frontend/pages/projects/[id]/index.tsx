@@ -1,12 +1,26 @@
+import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import Container from '@material-ui/core/Container'
-import { Typography, Box, Card, CardContent, Chip } from '@material-ui/core'
+import {
+  Container,
+  Typography,
+  Card,
+  CardContent,
+} from '@material-ui/core'
 
+import { Project } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
 
-export async function getStaticPaths() {
+interface StaticProps {
+  project: Project
+}
+
+type QueryParams = {
+  id: string
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
   const projects = await getProjects()
 
   return {
@@ -15,13 +29,12 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps<StaticProps, QueryParams> = async ({ params }) => {
   const project = await getProject(params.id)
   return { props: { project } }
-}
+} 
 
-export default function ProjectPage({ project }) {
-  console.log(project)
+const ProjectPage: NextPage<StaticProps> = ({ project }) => {
   return (
     <div>
       <Head>
@@ -34,6 +47,7 @@ export default function ProjectPage({ project }) {
       </Head>
 
       <main>
+        <Container>
         {/* Projects */}
         {project.languages.map((language) => {
           return (
@@ -45,7 +59,7 @@ export default function ProjectPage({ project }) {
                       pathname: '/projects/[id]/[language_code]',
                       query: {
                         id: project.id,
-                        language_code: project.language_code,
+                        language_code: language.language_code,
                       },
                     }}
                   >
@@ -56,7 +70,10 @@ export default function ProjectPage({ project }) {
             </Card>
           )
         })}
+        </Container>
       </main>
     </div>
   )
 }
+
+export default ProjectPage

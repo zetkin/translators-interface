@@ -11,9 +11,11 @@ import { getProjects } from '../src/api/projects'
  * Index Page - List Projects
  */
 
-interface StaticProps {projects: Project[]}
+interface StaticProps {
+  projects: Project[]
+}
 
-export const getStaticProps: GetStaticProps<StaticProps> = async ()=> {
+export const getStaticProps: GetStaticProps<StaticProps> = async () => {
   const projects = await getProjects()
   return { props: { projects } }
 }
