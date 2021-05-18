@@ -36,7 +36,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<StaticProps, QueryParams> = async ({ params }) => {
   const project = await getProject(params.id)
-  return { props: { project } }
+  const projectWithoutEnglish: Project = {
+    ...project,
+    languages: [
+      ...project.languages.filter(language => language.language_code !== 'en')
+    ]
+  }
+  return { props: { project: projectWithoutEnglish } }
 } 
 
 const ProjectPage: NextPage<StaticProps> = ({ project }) => {
