@@ -15,7 +15,7 @@ export interface Language {
 }
 
 export interface Translation {
-  id: string
+  id: number
   text: string
   author: string
   from_repository: boolean
