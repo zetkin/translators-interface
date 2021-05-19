@@ -6,6 +6,6 @@ export const getTranslations = async (
   language_id: number | string
 ): Promise<Translation[]> => {
   return fetchWrapper({
-    url: `http://localhost:8000/translations/?project=${project_id}&language=${language_id}`,
+    url: `${process.env.NEXT_PUBLIC_API_HOST}/translations/?project=${project_id}&language=${language_id}`,
   })
 }

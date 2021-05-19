@@ -8,14 +8,14 @@ import { Translation, Project } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
 import { getTranslations } from '../../../src/api/translations'
 
-
 /**
  * Translations Page - Page for viewing and editing translations
  */
 
 interface StaticProps {
   project: Project,
-  translations: Translation[]
+  translations: Translation[],
+  englishTranslations: Translation[]
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -35,12 +35,16 @@ export const getStaticProps: GetStaticProps<StaticProps, {id: string, language_c
   params,
 }) => {
   const project = await getProject(params.id)
-  const language = project.languages.find(language => language.language_code = params.language_code)
-  const translations = await getTranslations(parseInt(params.id), language.id)
-  return { props: { project, translations } }
+  const selectedLanguage = project.languages.find(language => language.language_code = params.language_code)
+  const english = project.languages.find(language => language.language_code = 'en')
+  const translations = await getTranslations(parseInt(params.id), selectedLanguage.id)
+  const englishTranslations = await getTranslations(parseInt(params.id), english.id)
+
+  return { props: { project, translations, englishTranslations } }
 }
 
-const ProjectPage: NextPage<StaticProps> = ({ translations }) => {
+const ProjectPage: NextPage<StaticProps> = ({ translations, englishTranslations }) => {
+  console.log(englishTranslations)
   return (
     <div>
       <Head>
@@ -54,8 +58,13 @@ const ProjectPage: NextPage<StaticProps> = ({ translations }) => {
 
       <main>
         <Container>
-          
-          
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gridTemplateRows: 'auto'
+          }}>
+            <div></div>
+          </div>          
         </Container>
       </main>
     </div>
