@@ -6,6 +6,7 @@ import { Container, Typography, TextField, Card, CardContent, Table, TableHead, 
 
 import { Translation, Project, Language } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
+import TranslationField from '../../../src/components/TranslationField'
 import { getTranslations } from '../../../src/api/translations'
 import joinTranslations, { JoinedTranslation } from '../../../src/utils/joinTranslations'
 
@@ -85,7 +86,7 @@ const ProjectPage: NextPage<StaticProps> = ({ project, selectedLanguage, joinedT
                           {joinedTranslation.english.text}
                         </TableCell>
                         <TableCell>
-                          <TextField style={{width: '100%'}} variant="outlined" defaultValue={joinedTranslation.selected?.text} />
+                          <TranslationField base={joinedTranslation.english} selected={joinedTranslation.selected}/>
                         </TableCell>
                       </TableRow>
                     )

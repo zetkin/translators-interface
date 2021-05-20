@@ -26,3 +26,7 @@ export interface Translation {
   project: number // Foreign key to the project id
   language: Language
 }
+
+export interface TranslationPostBody extends Omit<Translation, 'language'> {
+  language: number
+}
