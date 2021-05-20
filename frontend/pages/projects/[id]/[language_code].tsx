@@ -2,11 +2,12 @@ import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { Container, Typography, Card, CardContent } from '@material-ui/core'
+import { Container, Typography, TextField, Card, CardContent, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 
-import { Translation, Project } from '../../../src/global.types'
+import { Translation, Project, Language } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
 import { getTranslations } from '../../../src/api/translations'
+import joinTranslations, { JoinedTranslation } from '../../../src/utils/joinTranslations'
 
 /**
  * Translations Page - Page for viewing and editing translations
@@ -15,7 +16,9 @@ import { getTranslations } from '../../../src/api/translations'
 interface StaticProps {
   project: Project,
   translations: Translation[],
-  englishTranslations: Translation[]
+  englishTranslations: Translation[],
+  joinedTranslations: JoinedTranslation[]
+  selectedLanguage: Language
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -35,36 +38,61 @@ export const getStaticProps: GetStaticProps<StaticProps, {id: string, language_c
   params,
 }) => {
   const project = await getProject(params.id)
-  const selectedLanguage = project.languages.find(language => language.language_code = params.language_code)
-  const english = project.languages.find(language => language.language_code = 'en')
+
+  const selectedLanguage = project.languages.find(language => language.language_code === params.language_code)
+  const english = project.languages.find(language => language.language_code === 'en')
+
+
   const translations = await getTranslations(parseInt(params.id), selectedLanguage.id)
   const englishTranslations = await getTranslations(parseInt(params.id), english.id)
 
-  return { props: { project, translations, englishTranslations } }
+  const joinedTranslations = joinTranslations(englishTranslations, translations)
+
+  return { props: { project, translations, englishTranslations, joinedTranslations, selectedLanguage } }
 }
 
-const ProjectPage: NextPage<StaticProps> = ({ translations, englishTranslations }) => {
-  console.log(englishTranslations)
+const ProjectPage: NextPage<StaticProps> = ({ project, selectedLanguage, joinedTranslations }) => {
   return (
     <div>
       <Head>
         <title>Zetkin Translators Interface</title>
         <meta
           name="description"
-          content="Contribute to the localisation of Zetkin's software"
+          content="Editing translations"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <Container>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gridTemplateRows: 'auto'
-          }}>
-            <div></div>
-          </div>          
+          <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell size="small">Dotpath</TableCell>
+                  <TableCell>English</TableCell>
+                  <TableCell>{selectedLanguage.name}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  joinedTranslations.map(joinedTranslation => {
+                    return (
+                      <TableRow key={joinedTranslation.english.id}>
+                        <TableCell>
+                          {joinedTranslation.english.dotpath}
+                        </TableCell>
+                        <TableCell>
+                          {joinedTranslation.english.text}
+                        </TableCell>
+                        <TableCell>
+                          <TextField style={{width: '100%'}} variant="outlined" defaultValue={joinedTranslation.selected?.text} />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                }
+              </TableBody>
+            </Table> 
         </Container>
       </main>
     </div>

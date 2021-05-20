@@ -23,6 +23,7 @@ class TranslationViewSet(
     serializer_class = TranslationSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["language", "project", "from_repository"]
+    pagination_class = None
 
     def list(self, request, *args, **kwargs):
         # Return only latest translations if the queryparam "history" not set to true

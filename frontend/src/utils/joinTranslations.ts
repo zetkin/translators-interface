@@ -1,60 +1,26 @@
 import { Translation } from '../global.types'
 
-interface JoinedTranslation {
+export interface JoinedTranslation {
   english: Translation
   selected: Translation
 }
 
-/**
- *
- */
 export default (
   englishTranslations: Translation[],
-  translations: Translation[]
+  selectedTranslations: Translation[]
 ) => {
-  let englishIndex = 0
-  let joinedTranslations: JoinedTranslation[] = []
+  const joinedTranslations = englishTranslations.map((englishTranslation) => {
+    // For every english translation, look for matching one
+    const matchingTranslation = selectedTranslations.find(
+      (selectedTranslation) =>
+        selectedTranslation.dotpath === englishTranslation.dotpath
+    )
 
-  for (let i = 0; i < translations.length; i++) {
-    const currentTranslation = translations[i]
-    // Check if matches
-    const matches =
-      currentTranslation.dotpath === englishTranslations[englishIndex].dotpath
-
-    if (matches) {
-      // Add matching translation to
-      joinedTranslations = [
-        ...joinedTranslations,
-        {
-          english: englishTranslations[englishIndex],
-          selected: currentTranslation,
-        },
-      ]
-      // Increment english index
-      englishIndex++
-    } else {
-      // While it doesn't match
-      let match: boolean
-      while (!match) {
-        // Create entries with only english
-        joinedTranslations = [
-          ...joinedTranslations,
-          {
-            english: englishTranslations[englishIndex],
-            selected: null,
-          },
-        ]
-
-        // Going to the next one
-        // englishIndex++
-
-        // Until next one will match
-        match =
-          translations[i + 1].dotpath ===
-          englishTranslations[englishIndex].dotpath
-      }
+    return {
+      english: englishTranslation,
+      selected: matchingTranslation ?? null,
     }
-  }
+  })
 
   return joinedTranslations
 }
