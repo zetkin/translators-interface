@@ -9,7 +9,7 @@ interface Props {
   selected: Translation
 }
 
-const TranslationField = ({base, selected}: Props) => {
+const TranslationField = ({ base, selected }: Props) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const [saveSuccess, setSaveSuccess] = useState(false)
@@ -31,7 +31,7 @@ const TranslationField = ({base, selected}: Props) => {
       language: selected.language.id,
       file_path: selected.file_path,
       text: value,
-      created_at: new Date()
+      created_at: new Date(),
     }
 
     try {
@@ -45,16 +45,16 @@ const TranslationField = ({base, selected}: Props) => {
       console.error('Error posting!')
     }
   }
-  
+
   return (
-    <div style={{display: 'flex'}}>
-      <TextField 
+    <div style={{ display: 'flex' }}>
+      <TextField
         color="secondary"
         error={error != null}
         label={error || null}
-        style={{width: '100%'}} 
-        variant="outlined" 
-        defaultValue={savedValue} 
+        style={{ width: '100%' }}
+        variant="outlined"
+        defaultValue={savedValue}
         onInput={(e: ChangeEvent<HTMLInputElement>) => {
           e.preventDefault()
           setSaveSuccess(false)
@@ -66,22 +66,22 @@ const TranslationField = ({base, selected}: Props) => {
         // If current value different than saved value
         value != savedValue ||
         // If request in process
-        loading || 
+        loading ||
         // If reqest successful
         saveSuccess ? (
-          <Button 
+          <Button
             disabled={loading || saveSuccess}
-            style={{marginLeft: '5px'}} 
-            variant="contained" 
-            color="secondary" 
-            disableElevation 
+            style={{ marginLeft: '5px' }}
+            variant="contained"
+            color="secondary"
+            disableElevation
             onClick={handleSave}
           >
-              { saveSuccess ? '✓' : loading ? '...' : 'Save'}
+            {saveSuccess ? '✓' : loading ? '...' : 'Save'}
           </Button>
-        ): null
+        ) : null
       }
-      </div>
+    </div>
   )
 }
 
