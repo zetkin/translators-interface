@@ -13,9 +13,10 @@ export const getTranslations = async (
 export const postTranslation = async (
   translation: TranslationPostBody
 ): Promise<Translation> => {
+  const body = JSON.stringify(translation)
   return fetchWrapper({
     method: 'POST',
     url: `${process.env.NEXT_PUBLIC_API_HOST}/translations/`,
-    body: translation,
+    body,
   })
 }

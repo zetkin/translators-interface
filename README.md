@@ -35,3 +35,5 @@ docker-compose exec django python manage.py migrate
 # Create a superuser for Django Admin
 docker-compose exec django python manage.py createsuperuser
 ```
+
+If using docker-compose, you need to update your hosts file at `/etc/hosts` to map `django` to 127.0.0.1.

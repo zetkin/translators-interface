@@ -13,7 +13,9 @@ interface AuthFetchParams {
   headers?: { [key: string]: string }
 }
 
-export default async <G>(params: AuthFetchParams): Promise<G | undefined> => {
+const fetchWrapper = async <G>(
+  params: AuthFetchParams
+): Promise<G | undefined> => {
   const requestOptions: RequestInit = {
     // Defaults
     method: params.method || 'GET',
@@ -56,3 +58,5 @@ export default async <G>(params: AuthFetchParams): Promise<G | undefined> => {
     return undefined
   }
 }
+
+export default fetchWrapper

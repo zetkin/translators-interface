@@ -10,6 +10,7 @@ interface Props {
 }
 
 const TranslationField = ({base, selected}: Props) => {
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const [savedValue, setSavedValue] = useState<string>(selected?.text)
   const [value, setValue] = useState<string>(selected?.text)
@@ -24,6 +25,7 @@ const TranslationField = ({base, selected}: Props) => {
       language: selected.language.id,
       file_path: selected.file_path,
       text: value,
+      created_at: new Date()
     }
 
     // Make request
@@ -39,6 +41,7 @@ const TranslationField = ({base, selected}: Props) => {
   return (
     <div style={{display: 'flex'}}>
       <TextField 
+        color="secondary"
         error={error != null}
         label={error || null}
         style={{width: '100%'}} 
@@ -52,7 +55,7 @@ const TranslationField = ({base, selected}: Props) => {
         }}
       />
       {value != savedValue && (
-        <Button variant="contained" color="secondary" disableElevation onClick={handleSave}>Save</Button>
+        <Button style={{marginLeft: '5px'}} variant="contained" color="secondary" disableElevation onClick={handleSave}>Save</Button>
       )}
       </div>
   )
