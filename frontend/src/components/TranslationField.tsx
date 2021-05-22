@@ -16,8 +16,6 @@ const TranslationField = ({ base, selected }: Props) => {
   const [savedValue, setSavedValue] = useState<string>(selected?.text)
   const [value, setValue] = useState<string>(selected?.text)
 
-  console.log(value != savedValue)
-
   const handleSave = async () => {
     setError(null)
     setSaveSuccess(false)
@@ -47,7 +45,7 @@ const TranslationField = ({ base, selected }: Props) => {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', width: '100%' }}>
       <TextField
         multiline
         color="secondary"

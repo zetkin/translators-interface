@@ -1,0 +1,8 @@
+.gridCell {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid lightslategray;
+  display: flex;
+  align-items: center;
+}

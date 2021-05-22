@@ -11,6 +11,8 @@ import joinTranslations, {
   JoinedTranslation,
 } from '../../../src/utils/joinTranslations'
 
+import style from './[language_code].module.css'
+
 /**
  * Translations Page - Page for viewing and editing translations
  */
@@ -96,33 +98,36 @@ const ProjectPage: NextPage<StaticProps> = ({
               display: 'grid',
               gridTemplateColumns: 'auto 1fr 1fr',
               gridTemplateRows: 'auto',
-              gridGap: '10px',
               alignItems: 'center',
             }}
           >
-            <span>
+            <div className={style.gridCell}>
               <b>
                 <code>Dotpath</code>
               </b>
-            </span>
-            <span>
+            </div>
+            <div className={style.gridCell}>
               <b>English</b>
-            </span>
-            <span>
+            </div>
+            <div className={style.gridCell}>
               <b>Swedish</b>
-            </span>
+            </div>
 
             {joinedTranslations.map((joinedTranslation) => {
               return (
                 <>
-                  <span>
+                  <div className={style.gridCell}>
                     <code>{joinedTranslation.english.dotpath}</code>
-                  </span>
-                  <span>{joinedTranslation.english.text}</span>
-                  <TranslationField
-                    base={joinedTranslation.english}
-                    selected={joinedTranslation.selected}
-                  />
+                  </div>
+                  <div className={style.gridCell}>
+                    {joinedTranslation.english.text}
+                  </div>
+                  <div className={style.gridCell}>
+                    <TranslationField
+                      base={joinedTranslation.english}
+                      selected={joinedTranslation.selected}
+                    />
+                  </div>
                 </>
               )
             })}
