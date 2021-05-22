@@ -49,10 +49,13 @@ const TranslationField = ({ base, selected }: Props) => {
   return (
     <div style={{ display: 'flex' }}>
       <TextField
+        multiline
         color="secondary"
         error={error != null}
         label={error || null}
-        style={{ width: '100%' }}
+        style={{
+          width: '100%',
+        }}
         variant="outlined"
         defaultValue={savedValue}
         onInput={(e: ChangeEvent<HTMLInputElement>) => {

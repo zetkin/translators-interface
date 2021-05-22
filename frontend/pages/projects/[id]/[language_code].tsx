@@ -1,19 +1,7 @@
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import Head from 'next/head'
 
-import {
-  Container,
-  Typography,
-  TextField,
-  Card,
-  CardContent,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-} from '@material-ui/core'
+import { Container, TableRow, TableCell } from '@material-ui/core'
 
 import { Translation, Project, Language } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
@@ -102,34 +90,43 @@ const ProjectPage: NextPage<StaticProps> = ({
       </Head>
 
       <main>
-        <Container>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell size="small">Dotpath</TableCell>
-                  <TableCell>English</TableCell>
-                  <TableCell>{selectedLanguage.name}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {joinedTranslations.map((joinedTranslation) => {
-                  return (
-                    <TableRow key={joinedTranslation.english.id}>
-                      <TableCell>{joinedTranslation.english.dotpath}</TableCell>
-                      <TableCell>{joinedTranslation.english.text}</TableCell>
-                      <TableCell>
-                        <TranslationField
-                          base={joinedTranslation.english}
-                          selected={joinedTranslation.selected}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        <Container style={{ marginTop: 20, marginBottom: 20 }} maxWidth="xl">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'auto 1fr 1fr',
+              gridTemplateRows: 'auto',
+              gridGap: '10px',
+              alignItems: 'center',
+            }}
+          >
+            <span>
+              <b>
+                <code>Dotpath</code>
+              </b>
+            </span>
+            <span>
+              <b>English</b>
+            </span>
+            <span>
+              <b>Swedish</b>
+            </span>
+
+            {joinedTranslations.map((joinedTranslation) => {
+              return (
+                <>
+                  <span>
+                    <code>{joinedTranslation.english.dotpath}</code>
+                  </span>
+                  <span>{joinedTranslation.english.text}</span>
+                  <TranslationField
+                    base={joinedTranslation.english}
+                    selected={joinedTranslation.selected}
+                  />
+                </>
+              )
+            })}
+          </div>
         </Container>
       </main>
     </div>
