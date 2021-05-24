@@ -65,14 +65,24 @@ export const getStaticProps: GetStaticProps<
     english.id
   )
 
-  const joinedTranslations = joinTranslations(englishTranslations, translations)
+  const unsortedJoinedTranslations = joinTranslations(
+    englishTranslations,
+    translations
+  )
+
+  const emptyTranslations = unsortedJoinedTranslations.filter(
+    (translation) => !translation.selected?.text
+  )
+  const filledTranslations = unsortedJoinedTranslations.filter(
+    (translation) => translation.selected?.text ?? false
+  )
 
   return {
     props: {
       project,
       translations,
       englishTranslations,
-      joinedTranslations,
+      joinedTranslations: [...emptyTranslations, ...filledTranslations],
       selectedLanguage,
     },
   }
@@ -126,6 +136,7 @@ const ProjectPage: NextPage<StaticProps> = ({
                     <TranslationField
                       base={joinedTranslation.english}
                       selected={joinedTranslation.selected}
+                      language={selectedLanguage}
                     />
                   </div>
                 </>

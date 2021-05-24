@@ -1,15 +1,16 @@
 import React, { useState, ChangeEvent } from 'react'
 import { Button, TextField } from '@material-ui/core'
 
-import { Translation, TranslationPostBody } from '../global.types'
+import { Language, Translation, TranslationPostBody } from '../global.types'
 import { postTranslation } from '../api/translations'
 
 interface Props {
   base: Translation
   selected: Translation
+  language: Language
 }
 
-const TranslationField = ({ base, selected }: Props) => {
+const TranslationField = ({ base, selected, language }: Props) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const [saveSuccess, setSaveSuccess] = useState(false)
@@ -21,13 +22,22 @@ const TranslationField = ({ base, selected }: Props) => {
     setSaveSuccess(false)
     setLoading(true)
 
+    const filePath =
+      selected?.file_path ||
+      [
+        ...base.file_path.split('/').slice(0, -1),
+        `${language.language_code}.yaml`,
+      ].join('/')
+
+    console.log(filePath)
+
     // Build request body
     const body: TranslationPostBody = {
       ...base,
       author: 'river',
       from_repository: false,
-      language: selected.language.id,
-      file_path: selected.file_path,
+      language: language.id,
+      file_path: filePath,
       text: value,
       created_at: new Date(),
     }
