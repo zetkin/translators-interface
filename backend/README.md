@@ -9,6 +9,7 @@
 
 - [Django](https://docs.djangoproject.com/en/3.2/)
 - [PyGithub](https://github.com/PyGithub/PyGithub)
+- [GitPython](https://gitpython.readthedocs.io/en/stable/)
 
 ## Setup
 
