@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from translations.models import Project
-from translations.utils.create_pull_request import create_pull_request
+from translations.utils.create_pr import create_pr
 
 
 class Command(BaseCommand):
@@ -13,7 +13,7 @@ class Command(BaseCommand):
         try:
             project = Project.objects.get(name=options["project"])
 
-            create_pull_request(project)
+            create_pr(project)
 
             self.stdout.write(
                 self.style.SUCCESS(
