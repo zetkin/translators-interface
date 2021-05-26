@@ -1,6 +1,8 @@
 from django.contrib import admin, messages
+
 from .models import Project, Language, Translation
 from .utils.sync_project import sync_project
+from .utils.create_pr import create_pr
 
 # Language
 class LanguageAdmin(admin.ModelAdmin):
@@ -14,12 +16,18 @@ admin.site.register(Language, LanguageAdmin)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ("name", "repository_name")
 
-    actions = ["sync"]
+    actions = ["sync", "create_pr"]
 
     @admin.action(description="Sync translations")
     def sync(self, request, queryset):
         for project in queryset.all():
             sync_project(project)
+        self.message_user(request, "Sync successful", messages.SUCCESS)
+
+    @admin.action(description="Create Pull Request")
+    def create_pr(self, request, queryset):
+        for project in queryset.all():
+            create_pr(project)
         self.message_user(request, "Sync successful", messages.SUCCESS)
 
 

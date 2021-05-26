@@ -1,4 +1,4 @@
-from django.test import TestCase
+ from django.test import TestCase
 import logging
 from translations.models import Translation, Language, Project
 from translations.models.factories import (
@@ -6,10 +6,9 @@ from translations.models.factories import (
     ProjectFactory,
     LanguageFactory,
 )
-from translations.utils.create_pr import create_pr
+from translations.utils.sync_project import sync_project
 
-
-class CreatePRTestCase(TestCase):
+class SyncTestCase(TestCase):
     def setUp(self):
         logging.disable(logging.CRITICAL)
 
@@ -22,10 +21,30 @@ class CreatePRTestCase(TestCase):
             locale_files_path="backend/translations/utils/tests/mock_locale_files",
             languages=(english, swedish),
         )
+        
+        """
+        Translations recreating this folder structure
 
-        # Create translations for language
+            en.yaml
+            sv.yaml
+            home
+                en.yaml
+                    title
+                    content
+                        header
+                        subheader
+                sv.yaml
+                    title
+                    content
+                        header
+                        # NO SUBHEADER
+                
+
+        """
 
     def test_create_pr(self):
-        create_pr(self.project)
+        # Create temp folder
+
+        # Check that all files and contents exist in this folder
 
         self.assertEqual(0, 1)
