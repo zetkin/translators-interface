@@ -1,10 +1,12 @@
 import React from 'react'
 import Head from 'next/head'
+import NextLink from 'next/link'
+
 import type { AppProps } from 'next/app'
 
 import { ThemeProvider, fade } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { AppBar, Toolbar, Typography, InputBase } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, InputBase, Link } from '@material-ui/core'
 
 import theme from '../styles/theme'
 import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../src/constants'
@@ -37,7 +39,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
         <AppBar position="static">
           <Toolbar variant="dense" style={{ justifyContent: 'space-between' }}>
-            <Typography variant="h6">Zetkin Translators Interface</Typography>
+            <Link href="/" color="inherit" underline="none">
+              <Typography variant="h6">Zetkin Translators Interface</Typography>
+            </Link>
             {/* Username Field */}
             <div
               style={{

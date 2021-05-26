@@ -79,13 +79,9 @@ const ProjectPage: NextPage<StaticProps> = ({ project }) => {
               {project.name}
             </Typography>
             <Typography variant="h5">
-              <NextLink
-                href={`https://www.github.com/${project.repository_name}`}
-              >
-                <a style={{ color: 'darkslategrey' }}>
-                  {project.repository_name}
-                </a>
-              </NextLink>
+              <Link href={`https://www.github.com/${project.repository_name}`}>
+                {project.repository_name}
+              </Link>
             </Typography>
           </section>
 
@@ -119,7 +115,9 @@ const ProjectPage: NextPage<StaticProps> = ({ project }) => {
                     }}
                     key={language.id}
                   >
-                    <h4 className={styles.cardTitle}>{language.name}</h4>
+                    <Typography variant="h6" component="h4">
+                      {language.name}
+                    </Typography>
                   </Card>
                 </NextLink>
               )
