@@ -1,17 +1,19 @@
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 import {
   Container,
   Typography,
   Card,
-  CardContent,
+  Breadcrumbs,
+  Link,
 } from '@material-ui/core'
 
 import { Project } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
 
+import styles from './index.module.css'
 
 /**
  * Project Page - List project's languages
@@ -34,16 +36,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export const getStaticProps: GetStaticProps<StaticProps, QueryParams> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<StaticProps, QueryParams> = async ({
+  params,
+}) => {
   const project = await getProject(params.id)
   const projectWithoutEnglish: Project = {
     ...project,
     languages: [
-      ...project.languages.filter(language => language.language_code !== 'en')
-    ]
+      ...project.languages.filter(
+        (language) => language.language_code !== 'en'
+      ),
+    ],
   }
   return { props: { project: projectWithoutEnglish } }
-} 
+}
 
 const ProjectPage: NextPage<StaticProps> = ({ project }) => {
   return (
@@ -58,29 +64,67 @@ const ProjectPage: NextPage<StaticProps> = ({ project }) => {
       </Head>
 
       <main>
-        <Container>
-        {/* Projects */}
-        {project.languages.map((language) => {
-          return (
-            <Card key={language.id}>
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="h4">
-                  <Link
-                    href={{
-                      pathname: '/projects/[id]/[language_code]',
-                      query: {
-                        id: project.id,
-                        language_code: language.language_code,
-                      },
+        <Container style={{ marginTop: 20, marginBottom: 20 }}>
+          {/* Breadcrumbs */}
+          <Breadcrumbs style={{ marginBottom: 20 }} aria-label="breadcrumb">
+            <Link color="inherit" href="/">
+              Projects
+            </Link>
+            <Typography color="textPrimary">{project.name}</Typography>
+          </Breadcrumbs>
+
+          {/* Header */}
+          <section style={{ marginBottom: 40 }}>
+            <Typography variant="h3" component="h1">
+              {project.name}
+            </Typography>
+            <Typography variant="h5">
+              <NextLink
+                href={`https://www.github.com/${project.repository_name}`}
+              >
+                <a style={{ color: 'darkslategrey' }}>
+                  {project.repository_name}
+                </a>
+              </NextLink>
+            </Typography>
+          </section>
+
+          {/* Languages */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gridTemplateRows: 'auto',
+              alignItems: 'center',
+              gridGap: 20,
+            }}
+          >
+            {project.languages.map((language) => {
+              return (
+                <NextLink
+                  href={{
+                    pathname: '/projects/[id]/[language_code]',
+                    query: {
+                      id: project.id,
+                      language_code: language.language_code,
+                    },
+                  }}
+                >
+                  <Card
+                    style={{
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: 20,
                     }}
+                    key={language.id}
                   >
-                    {language.name}
-                  </Link>
-                </Typography>
-              </CardContent>
-            </Card>
-          )
-        })}
+                    <h4 className={styles.cardTitle}>{language.name}</h4>
+                  </Card>
+                </NextLink>
+              )
+            })}
+          </div>
         </Container>
       </main>
     </div>
