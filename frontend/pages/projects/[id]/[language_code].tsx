@@ -1,7 +1,8 @@
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import Head from 'next/head'
+import classnames from 'classnames'
 
-import { Container, TableRow, TableCell } from '@material-ui/core'
+import { Container, Breadcrumbs, Link, Typography } from '@material-ui/core'
 
 import { Translation, Project, Language } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
@@ -103,6 +104,15 @@ const ProjectPage: NextPage<StaticProps> = ({
 
       <main>
         <Container style={{ marginTop: 20, marginBottom: 20 }} maxWidth="xl">
+          <Breadcrumbs style={{ marginBottom: 20 }} aria-label="breadcrumb">
+            <Link color="inherit" href="/">
+              Projects
+            </Link>
+            <Link color="inherit" href={`/projects/${project.id}/`}>
+              {project.name}
+            </Link>
+            <Typography color="textPrimary">{selectedLanguage.name}</Typography>
+          </Breadcrumbs>
           <div
             style={{
               display: 'grid',
@@ -111,15 +121,15 @@ const ProjectPage: NextPage<StaticProps> = ({
               alignItems: 'center',
             }}
           >
-            <div className={style.gridCell}>
+            <div className={classnames(style.gridCell, style.gridHeaderCell)}>
               <b>
                 <code>Dotpath</code>
               </b>
             </div>
-            <div className={style.gridCell}>
+            <div className={classnames(style.gridCell, style.gridHeaderCell)}>
               <b>English</b>
             </div>
-            <div className={style.gridCell}>
+            <div className={classnames(style.gridCell, style.gridHeaderCell)}>
               <b>Swedish</b>
             </div>
 
