@@ -10,10 +10,9 @@ import {
   Link,
 } from '@material-ui/core'
 
+import { COUNTRIES } from '../../../src/constants'
 import { Project } from '../../../src/global.types'
 import { getProject, getProjects } from '../../../src/api/projects'
-
-import styles from './index.module.css'
 
 /**
  * Project Page - List project's languages
@@ -116,7 +115,7 @@ const ProjectPage: NextPage<StaticProps> = ({ project }) => {
                     key={language.id}
                   >
                     <Typography variant="h6" component="h4">
-                      {language.name}
+                      {COUNTRIES[language.language_code]?.flag} {language.name}
                     </Typography>
                   </Card>
                 </NextLink>

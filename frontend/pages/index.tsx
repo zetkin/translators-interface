@@ -13,6 +13,9 @@ import {
   CardHeader,
 } from '@material-ui/core'
 
+import { fade } from '@material-ui/core/styles'
+
+import { COUNTRIES } from '../src/constants'
 import { Project } from '../src/global.types'
 import { getProjects } from '../src/api/projects'
 
@@ -94,22 +97,35 @@ const Home: NextPage<StaticProps> = ({ projects }) => {
 
                     <Box display="flex" style={{ marginTop: 20 }}>
                       {project.languages.map((language) => {
-                        return (
-                          <NextLink
-                            href={{
-                              pathname: '/projects/[id]/[language_code]',
-                              query: {
-                                id: project.id,
-                                language_code: language.language_code,
-                              },
-                            }}
-                          >
-                            <Chip
-                              label={language.name}
-                              style={{ marginRight: 5 }}
-                            ></Chip>
-                          </NextLink>
-                        )
+                        if (language.language_code !== 'en') {
+                          return (
+                            <NextLink
+                              href={{
+                                pathname: '/projects/[id]/[language_code]',
+                                query: {
+                                  id: project.id,
+                                  language_code: language.language_code,
+                                },
+                              }}
+                            >
+                              <Chip
+                                label={`${
+                                  COUNTRIES[language.language_code]?.flag
+                                } ${language.name}`}
+                                style={{
+                                  marginRight: 5,
+                                  color: 'white',
+                                  backgroundColor: fade(
+                                    COUNTRIES[language.language_code]?.color ||
+                                      'inherit',
+                                    0.6
+                                  ),
+                                }}
+                              ></Chip>
+                            </NextLink>
+                          )
+                        }
+                        return null
                       })}
                     </Box>
                   </Card>
