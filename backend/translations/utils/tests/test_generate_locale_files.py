@@ -1,6 +1,5 @@
 from django.test import TestCase
-import os
-import logging
+import os, glob, logging
 from translations.models import Translation, Language, Project
 from translations.models.factories import (
     LanguageFactory,
@@ -9,20 +8,21 @@ from translations.models.factories import (
     TranslationFactory,
 )
 from translations.utils.generate_locale_files import generate_locale_files
+from translations.utils.sync_project import sync_project
 
 
 class SyncTestCase(TestCase):
     def setUp(self):
         logging.disable(logging.CRITICAL)
 
-        english = LanguageFactory(name="English", language_code="en")
-        swedish = LanguageFactory(name="Swedish", language_code="sv")
+        self.english = LanguageFactory(name="English", language_code="en")
+        self.swedish = LanguageFactory(name="Swedish", language_code="sv")
 
         self.project = ProjectFactory(
             name="Test Git Project",
             repository_name="zetkin/translators-interface",
             locale_files_path="backend/translations/utils/tests/mock_locale_files",
-            languages=(english, swedish),
+            languages=(self.english, self.swedish),
         )
 
         """
@@ -57,10 +57,14 @@ class SyncTestCase(TestCase):
 
     def test_generate_locale_files(self):
         # Generates files with correct contents within the mock_generated_files folder
-
         path = os.path.join(
             os.getcwd(), "translations/utils/tests/mock_generated_files"
         )
         generate_locale_files(self.project, path)
+
+        # Delete all contents of generated files
+        # filelist = glob.glob(os.path.join(path, "*"))
+        # for f in filelist:
+        #     os.remove(f)
 
         self.assertEqual(0, 1)
