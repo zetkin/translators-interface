@@ -15,9 +15,13 @@ def generate_locale_files(project: Project, path: str):
     for translation in latest_project_translations:
         # If file not in root directory
         if len(translation.file_path.split("/")[:-1]) > 1:
-            # Make folders for file
+            # Make folders
             try:
-                os.mkdir(translation.file_path.split("/")[1:-1].join("/"))
+                os.mkdir("/".join(translation.file_path.split("/")[1:-1]))
             except FileExistsError:
                 pass
+        # Create file
+        try:
             os.mknod(translation.file_path)
+        except FileExistsError:
+            pass
