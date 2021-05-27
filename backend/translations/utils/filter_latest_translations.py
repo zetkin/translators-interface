@@ -1,7 +1,11 @@
+from django.db.models.query import QuerySet
 from translations.models import Project, Language
+from translations.models.translation import Translation
 
 
-def filter_latest_translations(translations_qs):
+def filter_latest_translations(
+    translations_qs: QuerySet[Translation],
+) -> QuerySet[Translation]:
 
     translations_hashmap = {}
 
