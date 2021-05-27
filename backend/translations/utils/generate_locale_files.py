@@ -1,7 +1,18 @@
 import os
+import yaml
 
 from translations.models import Project, Translation
 from .filter_latest_translations import filter_latest_translations
+
+
+def put(d, keys, item):
+    if "." in keys:
+        key, rest = keys.split(".", 1)
+        if key not in d:
+            d[key] = {}
+        put(d[key], rest, item)
+    else:
+        d[keys] = item
 
 
 def generate_locale_files(project: Project, path: str):
@@ -27,11 +38,26 @@ def generate_locale_files(project: Project, path: str):
         except FileExistsError:
             pass
 
-    # Group translations that are in the same file and make file structure
-    translations_grouped = {}
+    # Group translations that are in the same file and make file contents
+    translations_files = {}
     for translation in latest_project_translations:
+        # Create item in translations
+        if not translations_files.get(translation.file_path):
+            translations_files[translation.file_path] = {}
 
-        if not translations_grouped.get(translation.file_path):
-            translations_grouped[translation.file_path] = {}
+        put(
+            translations_files[translation.file_path],
+            translation.object_path,
+            translation.text,
+        )
 
-    # Open each file and write translations
+    # Write each items contents in YAML
+    for file_path in translations_files:
+        # Create YAML
+        yaml_contents = yaml.dump(
+            translations_files[file_path], default_flow_style=False
+        )
+        # Write files
+        f = open(file_path, "a")
+        f.write(yaml_contents)
+        f.close()
