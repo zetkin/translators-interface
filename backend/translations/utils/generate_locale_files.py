@@ -32,6 +32,10 @@ def generate_locale_files(project: Project, path: str):
                 os.mkdir("/".join(translation.file_path.split("/")[1:-1]))
             except FileExistsError:
                 pass
+            except FileNotFoundError:
+                print(translation.file_path)
+                raise FileNotFoundError
+
         # Create file
         try:
             os.mknod(translation.file_path)
