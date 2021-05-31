@@ -37,3 +37,29 @@ docker-compose exec django python manage.py createsuperuser
 ```
 
 If using docker-compose, you need to update your hosts file at `/etc/hosts` to map `django` to 127.0.0.1.
+
+## Features
+
+- Django Admin
+  - Admin Model Pages
+    - Project
+      - Sync project
+        - Imports translation objects from a project
+      - Export translation files
+        - Download a zip file of the generated YAML locale files for a project with the latest translations.
+      - CRUD operations for project model
+    - Language
+      - CRUD operations for language model
+    - Translation
+      - CRUD operations for translation model
+    - Users
+      - User management for access to the admin interface
+- Web Application
+  - Projects page
+    - View all projects
+    - Click through to project detail and edit translations page
+  - Project detail page
+    - View project details and click through to edit translations page for each language
+  - Edit translations page
+    - Shows the dotpath and "base" translations (always English)
+    - Lists
