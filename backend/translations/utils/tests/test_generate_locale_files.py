@@ -1,6 +1,9 @@
 from django.test import TestCase
-import os, glob, logging, shutil
-from translations.models import Translation, Language, Project
+import os, logging, shutil, yaml
+from pandas import json_normalize
+from yaml import Loader
+
+from translations.models import Translation
 from translations.models.factories import (
     LanguageFactory,
     ProjectFactory,
@@ -70,7 +73,15 @@ class SyncTestCase(TestCase):
         # Generates files with correct contents within the mock_generated_files folder
         generate_locale_files(self.project, path)
 
-        # Check contents of folder
+        for t in Translation.objects.all():
+            # Get contents of file translation should be in
+            file_path = os.path.join(path, "/".join(t.file_path.split("/")[1:]))
+            with open(file_path, "r") as f:
+                yaml_contents = yaml.load(f, Loader=Loader)
+                flat_file_object = json_normalize(yaml_contents, sep=".").to_dict(
+                    orient="records"
+                )[0]
+                self.assertEqual(flat_file_object[t.object_path], t.text)
 
         # Clean up
         shutil.rmtree(path)
