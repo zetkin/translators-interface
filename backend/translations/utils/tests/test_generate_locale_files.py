@@ -11,7 +11,6 @@ from translations.models.factories import (
     TranslationFactory,
 )
 from translations.utils.generate_locale_files import generate_locale_files
-from translations.utils.sync_project import sync_project
 
 
 class SyncTestCase(TestCase):
