@@ -81,6 +81,7 @@ class SyncTestCase(TestCase):
                 flat_file_object = json_normalize(yaml_contents, sep=".").to_dict(
                     orient="records"
                 )[0]
+                # Check that the YAML file contains the selected translation at the correct object path
                 self.assertEqual(flat_file_object[t.object_path], t.text)
 
         # Clean up
