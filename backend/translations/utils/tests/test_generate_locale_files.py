@@ -1,5 +1,5 @@
 from django.test import TestCase
-import os, glob, logging
+import os, glob, logging, shutil
 from translations.models import Translation, Language, Project
 from translations.models.factories import (
     LanguageFactory,
@@ -56,15 +56,21 @@ class SyncTestCase(TestCase):
         TranslationFactory(file_path="./home/sv.yaml", object_path="content.header")
 
     def test_generate_locale_files(self):
-        # Generates files with correct contents within the mock_generated_files folder
         path = os.path.join(
-            os.getcwd(), "translations/utils/tests/mock_generated_files"
+            os.getcwd(), "translations/utils/tests/mock_generated_files", ""
         )
+
+        # If cleanup failed, delete folder
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+
+        # Make folder to generate in
+        os.makedirs(path)
+
+        # Generates files with correct contents within the mock_generated_files folder
         generate_locale_files(self.project, path)
 
-        # Delete all contents of generated files
-        # filelist = glob.glob(os.path.join(path, "*"))
-        # for f in filelist:
-        #     os.remove(f)
+        # Check contents of folder
 
-        self.assertEqual(0, 1)
+        # Clean up
+        shutil.rmtree(path)
