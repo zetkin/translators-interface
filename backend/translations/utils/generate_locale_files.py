@@ -29,12 +29,9 @@ def generate_locale_files(project: Project, path: str):
         if len(translation.file_path.split("/")[:-1]) > 1:
             # Make folders
             try:
-                os.mkdir("/".join(translation.file_path.split("/")[1:-1]))
+                os.makedirs("/".join(translation.file_path.split("/")[1:-1]))
             except FileExistsError:
                 pass
-            except FileNotFoundError:
-                print(translation.file_path)
-                raise FileNotFoundError
 
         # Create file
         try:
@@ -59,7 +56,7 @@ def generate_locale_files(project: Project, path: str):
     for file_path in translations_files:
         # Create YAML
         yaml_contents = yaml.dump(
-            translations_files[file_path], default_flow_style=False
+            translations_files[file_path], default_flow_style=False, allow_unicode=True
         )
         # Write files
         f = open(file_path, "a")
