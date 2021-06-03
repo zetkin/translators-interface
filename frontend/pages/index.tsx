@@ -98,6 +98,8 @@ const Home: NextPage<StaticProps> = ({ projects }) => {
                     <Box display="flex" style={{ marginTop: 20 }}>
                       {project.languages.map((language) => {
                         if (language.language_code !== 'en') {
+                          const country = COUNTRIES[language.language_code]
+
                           return (
                             <NextLink
                               href={{
@@ -109,17 +111,19 @@ const Home: NextPage<StaticProps> = ({ projects }) => {
                               }}
                             >
                               <Chip
-                                label={`${
-                                  COUNTRIES[language.language_code]?.flag
-                                } ${language.name}`}
+                                label={`${country?.flag || ''} ${
+                                  language.name
+                                }`}
                                 style={{
                                   marginRight: 5,
                                   color: 'white',
-                                  backgroundColor: fade(
-                                    COUNTRIES[language.language_code]?.color ||
-                                      'inherit',
-                                    0.6
-                                  ),
+                                  backgroundColor: country
+                                    ? fade(
+                                        COUNTRIES[language.language_code]
+                                          ?.color || 'inherit',
+                                        0.6
+                                      )
+                                    : 'grey',
                                 }}
                               ></Chip>
                             </NextLink>

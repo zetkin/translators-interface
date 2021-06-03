@@ -14,4 +14,8 @@ export const COUNTRIES = {
     flag: '🇩🇰',
     color: '#c60c30',
   },
+  nn: {
+    flag: '🇳🇴',
+    color: '#BA0C2F',
+  },
 }
