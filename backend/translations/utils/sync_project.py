@@ -1,10 +1,12 @@
 import yaml
 from django.db.utils import IntegrityError
+from django.utils.timezone import now
 from decouple import config
 from github import Github
 from pandas import json_normalize
 from yaml.loader import BaseLoader
 from yaml import scanner
+
 
 from translations.models import Project, Language, Translation
 
@@ -66,3 +68,7 @@ def sync_project(project: Project):
                             pass
             except scanner.ScannerError:
                 pass
+
+    # When done, set the time the sync occurred
+    project.last_sync_time = now()
+    project.save()

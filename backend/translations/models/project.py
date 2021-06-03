@@ -1,5 +1,6 @@
 from django.db import models
 from rest_framework import serializers
+from django.utils.timezone import now
 
 from .language import Language, LanguageSerializer
 
@@ -19,6 +20,7 @@ class Project(models.Model):
         unique=False,
     )
     languages = models.ManyToManyField(Language)
+    last_sync_time = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         unique_together = (
