@@ -6,6 +6,7 @@ export interface Project {
   repository_name: string
   locale_files_path: string
   languages: Language[]
+  last_sync_time: string // ISO String
 }
 
 export interface Language {

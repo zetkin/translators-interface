@@ -1,23 +1,17 @@
 import { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
-import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  Link,
-  CardContent,
-  Chip,
-  CardHeader,
-} from '@material-ui/core'
-
+import { Container, Typography, Box, Card, Link, Chip } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles'
 
 import { COUNTRIES } from '../src/constants'
 import { Project } from '../src/global.types'
 import { getProjects } from '../src/api/projects'
+
+dayjs.extend(relativeTime)
 
 /**
  * Home Page - Lists Projects
@@ -61,6 +55,11 @@ const Home: NextPage<StaticProps> = ({ projects }) => {
           >
             {/* Projects */}
             {projects.map((project) => {
+              const lastSyncTime = dayjs(project.last_sync_time)
+              const timeFromLastSync = lastSyncTime.isValid()
+                ? dayjs(new Date()).to(lastSyncTime)
+                : null
+
               return (
                 <NextLink
                   href={{
@@ -82,7 +81,11 @@ const Home: NextPage<StaticProps> = ({ projects }) => {
                       <Typography gutterBottom variant="h6" component="h4">
                         {project.name}
                       </Typography>
-
+                      <Typography gutterBottom component="p">
+                        {timeFromLastSync
+                          ? ` Last synced ${timeFromLastSync}`
+                          : `Not yet synced`}
+                      </Typography>
                       <Typography gutterBottom component="p">
                         <Link
                           onClick={(e) => {
