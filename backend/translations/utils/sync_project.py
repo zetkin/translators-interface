@@ -3,6 +3,8 @@ from django.db.utils import IntegrityError
 from decouple import config
 from github import Github
 from pandas import json_normalize
+from yaml.loader import BaseLoader
+from yaml import scanner
 
 from translations.models import Project, Language, Translation
 
@@ -39,25 +41,28 @@ def sync_project(project: Project):
         commit_date = commit.committer.date
         # If language in the project languages
         if language_code in [lang.language_code for lang in project.languages.all()]:
-            file_object = yaml.safe_load(file.decoded_content)
-            flat_file_object = json_normalize(file_object, sep=".").to_dict(
-                orient="records"
-            )[0]
-            # Loop through each translation key/value pair and create translation object
-            for key, value in flat_file_object.items():
-                if isinstance(value, str):
-                    language = Language.objects.get(language_code=language_code)
-                    try:
-                        translation = Translation.objects.create(
-                            text=value,
-                            author="",
-                            from_repository=True,
-                            file_path=relative_filepath,
-                            object_path=key,
-                            project=project,
-                            language=language,
-                            created_at=commit_date,
-                        )
-                    # If translation with file_path, object_path & created_at exists
-                    except IntegrityError:
-                        pass
+            try:
+                file_object = yaml.load(file.decoded_content, Loader=BaseLoader)
+                flat_file_object = json_normalize(
+                    file_object, sep=".", errors="ignore"
+                ).to_dict(orient="records")[0]
+                # Loop through each translation key/value pair and create translation object
+                for key, value in flat_file_object.items():
+                    if isinstance(value, str):
+                        language = Language.objects.get(language_code=language_code)
+                        try:
+                            translation = Translation.objects.create(
+                                text=value,
+                                author="",
+                                from_repository=True,
+                                file_path=relative_filepath,
+                                object_path=key,
+                                project=project,
+                                language=language,
+                                created_at=commit_date,
+                            )
+                        # If translation with file_path, object_path & created_at exists
+                        except IntegrityError:
+                            pass
+            except scanner.ScannerError:
+                pass
