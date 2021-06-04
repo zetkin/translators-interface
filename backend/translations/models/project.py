@@ -12,12 +12,14 @@ class Project(models.Model):
         null=False,
         blank=False,
         unique=False,
+        help_text="The repo name including the project if there is one. For example 'zetkin/organize.zetk.in'",
     )
     locale_files_path = models.CharField(
         max_length=128,
         null=False,
         blank=False,
         unique=False,
+        help_text="Path to the locale files within the project. Use this format 'src/locale'.",
     )
     languages = models.ManyToManyField(Language)
     last_sync_time = models.DateTimeField(null=True, blank=True)
