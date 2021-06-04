@@ -19,7 +19,7 @@ admin.site.register(Language, LanguageAdmin)
 
 # Project
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("name", "repository_name")
+    list_display = ("name", "repository_name", "last_sync_time")
 
     actions = ["sync", "create_pr", "export_translations"]
 
