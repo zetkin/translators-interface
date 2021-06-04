@@ -140,7 +140,9 @@ const ProjectPage: NextPage<StaticProps> = ({
                     <code>{joinedTranslation.english.dotpath}</code>
                   </div>
                   <div className={style.gridCell}>
-                    {joinedTranslation.english.text}
+                    <span style={{ whiteSpace: 'pre-line', fontSize: '1rem' }}>
+                      {joinedTranslation.english.text}
+                    </span>
                   </div>
                   <div className={style.gridCell}>
                     <TranslationField
