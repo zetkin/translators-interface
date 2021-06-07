@@ -7,12 +7,7 @@ import theme from '../../styles/theme'
 
 import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../constants'
 import useLocalStorage from '../hooks/useLocalStorage'
-
-const isEmail = (text: string) => {
-  const re =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(text).toLowerCase())
-}
+import isEmail from '../utils/isEmail'
 
 const EmailField = () => {
   const [authorEmail, setAuthorEmail] = useLocalStorage<string>(

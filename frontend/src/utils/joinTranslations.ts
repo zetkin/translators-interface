@@ -5,7 +5,7 @@ export interface JoinedTranslation {
   selected: Translation
 }
 
-export default (
+const joinTranslations = (
   englishTranslations: Translation[],
   selectedTranslations: Translation[]
 ) => {
@@ -24,3 +24,5 @@ export default (
 
   return joinedTranslations
 }
+
+export default joinTranslations

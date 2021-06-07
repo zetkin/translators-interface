@@ -4,6 +4,10 @@ import { Button, TextField } from '@material-ui/core'
 import { Language, Translation, TranslationPostBody } from '../global.types'
 import { postTranslation } from '../api/translations'
 
+import useLocalStorage from '../hooks/useLocalStorage'
+import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../constants'
+import RegisterDialog from './RegisterDialog'
+
 interface Props {
   base: Translation
   selected: Translation
@@ -11,13 +15,21 @@ interface Props {
 }
 
 const TranslationField = ({ base, selected, language }: Props) => {
+  const [authorEmail] = useLocalStorage<string>(AUTHOR_NAME_LOCAL_STORAGE_KEY)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [savedValue, setSavedValue] = useState<string>(selected?.text)
   const [value, setValue] = useState<string>(selected?.text)
+  const [registerDialogOpen, setRegisterDialogOpen] = useState(false)
 
   const handleSave = async () => {
+    // Check if user email
+    if (!authorEmail) {
+      setRegisterDialogOpen(true)
+      return
+    }
+
     setError(null)
     setSaveSuccess(false)
     setLoading(true)
@@ -32,7 +44,7 @@ const TranslationField = ({ base, selected, language }: Props) => {
     // Build request body
     const body: TranslationPostBody = {
       ...base,
-      author: 'river',
+      author: authorEmail,
       from_repository: false,
       language: language.id,
       file_path: filePath,
@@ -90,6 +102,12 @@ const TranslationField = ({ base, selected, language }: Props) => {
           </Button>
         ) : null
       }
+      <RegisterDialog
+        open={registerDialogOpen}
+        onClose={() => {
+          setRegisterDialogOpen(false)
+        }}
+      />
     </div>
   )
 }
