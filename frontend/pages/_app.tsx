@@ -1,22 +1,16 @@
 import React from 'react'
 import Head from 'next/head'
-import NextLink from 'next/link'
 
 import type { AppProps } from 'next/app'
 
-import { ThemeProvider, fade } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { AppBar, Toolbar, Typography, InputBase, Link } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Link } from '@material-ui/core'
 
 import theme from '../styles/theme'
-import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../src/constants'
-import useLocalStorage from '../src/hooks/useLocalStorage'
+import EmailField from '../src/components/EmailField'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [authorName, setAuthorName] = useLocalStorage<string>(
-    AUTHOR_NAME_LOCAL_STORAGE_KEY
-  )
-
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side')
@@ -42,22 +36,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <Link href="/" color="inherit" underline="none">
               <Typography variant="h6">Zetkin Translators Interface</Typography>
             </Link>
-            {/* Username Field */}
-            <div
-              style={{
-                backgroundColor: fade(theme.palette.common.white, 0.15),
-                color: theme.palette.common.white,
-                borderRadius: 4,
-                padding: theme.spacing(0.25, 2),
-              }}
-            >
-              <InputBase
-                placeholder="Your name..."
-                style={{ color: 'inherit' }}
-                value={authorName}
-                onChange={(e) => setAuthorName(e.target.value)}
-              />
-            </div>
+            <EmailField />
           </Toolbar>
         </AppBar>
 

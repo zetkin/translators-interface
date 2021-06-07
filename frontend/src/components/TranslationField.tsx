@@ -29,8 +29,6 @@ const TranslationField = ({ base, selected, language }: Props) => {
         `${language.language_code}.yaml`,
       ].join('/')
 
-    console.log(filePath)
-
     // Build request body
     const body: TranslationPostBody = {
       ...base,
