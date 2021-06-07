@@ -27,7 +27,7 @@ const RegisterDialog = ({ open, onClose }: Props) => {
     AUTHOR_NAME_LOCAL_STORAGE_KEY
   )
   const [value, setValue] = useState<string>(authorEmail)
-  const [error, setError] = useState<boolean>()
+  const [error, setError] = useState<boolean>(false)
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -55,6 +55,7 @@ const RegisterDialog = ({ open, onClose }: Props) => {
             variant="outlined"
             label="Your email address"
             color="secondary"
+            value={value}
             onChange={(e) => {
               // Set current value
               setValue(e.target.value)
@@ -68,7 +69,7 @@ const RegisterDialog = ({ open, onClose }: Props) => {
             disableHoverListener
             disableTouchListener
             arrow
-            open={error && value && value.length > 0}
+            open={error}
           >
             <Button
               disabled={error || !value?.length}
@@ -78,7 +79,8 @@ const RegisterDialog = ({ open, onClose }: Props) => {
               style={{ marginTop: 10 }}
               value={value}
               onClick={() => {
-                setAuthorEmail
+                setAuthorEmail(value)
+                onClose()
               }}
             >
               Submit
