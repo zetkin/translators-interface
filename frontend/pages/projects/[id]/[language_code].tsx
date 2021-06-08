@@ -130,7 +130,7 @@ const ProjectPage: NextPage<StaticProps> = ({
               <b>English</b>
             </div>
             <div className={classnames(style.gridCell, style.gridHeaderCell)}>
-              <b>Swedish</b>
+              <b>{selectedLanguage.name}</b>
             </div>
 
             {joinedTranslations.map((joinedTranslation) => {

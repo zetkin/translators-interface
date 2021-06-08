@@ -51,7 +51,7 @@ const RegisterDialog = ({ open, onClose }: Props) => {
             variant="outlined"
             label="Your email address"
             color="secondary"
-            value={value}
+            defaultValue={value || ''}
             onChange={(e) => {
               // Set current value
               setValue(e.target.value)
@@ -76,6 +76,7 @@ const RegisterDialog = ({ open, onClose }: Props) => {
               value={value}
               onClick={() => {
                 setUserEmail(value)
+                setValue('')
                 onClose()
               }}
             >
