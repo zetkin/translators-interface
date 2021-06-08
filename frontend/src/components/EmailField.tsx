@@ -5,10 +5,12 @@ import theme from '../../styles/theme'
 import { UserEmailContext } from '../../src/contexts/userEmailContext'
 
 import RegisterDialog from './RegisterDialog'
+import SignoutDialog from './SignoutDialog'
 
 const EmailField = () => {
   const { userEmail } = useContext(UserEmailContext)
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false)
+  const [signoutDialogOpen, setSignoutDialogOpen] = useState(false)
 
   return (
     <>
@@ -22,7 +24,10 @@ const EmailField = () => {
           border: 'none',
         }}
         onClick={(e) => {
-          setRegisterDialogOpen(true)
+          // If user is signed in, show the signout dialog
+          if (userEmail) setSignoutDialogOpen(true)
+          // If user is not signed in, show the register dialog
+          else setRegisterDialogOpen(true)
         }}
       >
         <span style={{ color: 'inherit', fontSize: '1.1em' }}>
@@ -33,6 +38,12 @@ const EmailField = () => {
         open={registerDialogOpen}
         onClose={() => {
           setRegisterDialogOpen(false)
+        }}
+      />
+      <SignoutDialog
+        open={signoutDialogOpen}
+        onClose={() => {
+          setSignoutDialogOpen(false)
         }}
       />
     </>
