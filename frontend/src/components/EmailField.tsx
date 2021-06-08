@@ -29,7 +29,7 @@ const EmailField = () => {
         }}
       >
         <span style={{ color: 'inherit', fontSize: '1.1em' }}>
-          {authorEmail || 'Your email...'}
+          {authorEmail || 'Enter your email'}
         </span>
       </button>
       <RegisterDialog
