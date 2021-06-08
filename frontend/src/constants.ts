@@ -1,4 +1,4 @@
-export const AUTHOR_NAME_LOCAL_STORAGE_KEY = 'zetkin_author_name'
+export const USER_EMAIL_LOCAL_STORAGE_KEY = 'zetkin_user_email'
 
 // maps the language code to a flag
 export const COUNTRIES = {

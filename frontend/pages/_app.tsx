@@ -9,6 +9,7 @@ import { AppBar, Toolbar, Typography, Link } from '@material-ui/core'
 
 import theme from '../styles/theme'
 import EmailField from '../src/components/EmailField'
+import { UserEmailProvider } from '../src/contexts/userEmailContext'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
@@ -28,20 +29,27 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+      <UserEmailProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
 
-        <AppBar position="static">
-          <Toolbar variant="dense" style={{ justifyContent: 'space-between' }}>
-            <Link href="/" color="inherit" underline="none">
-              <Typography variant="h6">Zetkin Translators Interface</Typography>
-            </Link>
-            <EmailField />
-          </Toolbar>
-        </AppBar>
+          <AppBar position="static">
+            <Toolbar
+              variant="dense"
+              style={{ justifyContent: 'space-between' }}
+            >
+              <Link href="/" color="inherit" underline="none">
+                <Typography variant="h6">
+                  Zetkin Translators Interface
+                </Typography>
+              </Link>
+              <EmailField />
+            </Toolbar>
+          </AppBar>
 
-        <Component {...pageProps} />
-      </ThemeProvider>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </UserEmailProvider>
     </React.Fragment>
   )
 }

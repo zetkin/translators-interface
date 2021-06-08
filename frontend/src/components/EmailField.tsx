@@ -1,16 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { fade } from '@material-ui/core/styles'
 
-import { InputBase, Button, Tooltip } from '@material-ui/core'
-
 import theme from '../../styles/theme'
-import useLocalStorage from '../hooks/useLocalStorage'
-import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../constants'
+import { UserEmailContext } from '../../src/contexts/userEmailContext'
 
 import RegisterDialog from './RegisterDialog'
 
 const EmailField = () => {
-  const [authorEmail] = useLocalStorage<string>(AUTHOR_NAME_LOCAL_STORAGE_KEY)
+  const { userEmail } = useContext(UserEmailContext)
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false)
 
   return (
@@ -29,7 +26,7 @@ const EmailField = () => {
         }}
       >
         <span style={{ color: 'inherit', fontSize: '1.1em' }}>
-          {authorEmail || 'Enter your email'}
+          {userEmail || 'Enter your email'}
         </span>
       </button>
       <RegisterDialog

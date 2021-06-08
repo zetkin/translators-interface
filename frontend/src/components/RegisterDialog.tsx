@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import {
   Modal,
@@ -12,10 +12,8 @@ import {
   Tooltip,
 } from '@material-ui/core'
 
-import useLocalStorage from '../hooks/useLocalStorage'
 import isEmail from '../utils/isEmail'
-
-import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../constants'
+import { UserEmailContext } from '../contexts/userEmailContext'
 
 interface Props {
   open: boolean
@@ -23,10 +21,8 @@ interface Props {
 }
 
 const RegisterDialog = ({ open, onClose }: Props) => {
-  const [authorEmail, setAuthorEmail] = useLocalStorage<string>(
-    AUTHOR_NAME_LOCAL_STORAGE_KEY
-  )
-  const [value, setValue] = useState<string>(authorEmail)
+  const { userEmail, setUserEmail } = useContext(UserEmailContext)
+  const [value, setValue] = useState<string>(userEmail)
   const [error, setError] = useState<boolean>(false)
 
   return (
@@ -79,7 +75,7 @@ const RegisterDialog = ({ open, onClose }: Props) => {
               style={{ marginTop: 10 }}
               value={value}
               onClick={() => {
-                setAuthorEmail(value)
+                setUserEmail(value)
                 onClose()
               }}
             >

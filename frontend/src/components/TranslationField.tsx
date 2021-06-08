@@ -1,11 +1,10 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState, ChangeEvent, useContext } from 'react'
 import { Button, TextField } from '@material-ui/core'
 
 import { Language, Translation, TranslationPostBody } from '../global.types'
 import { postTranslation } from '../api/translations'
+import { UserEmailContext } from '../contexts/userEmailContext'
 
-import useLocalStorage from '../hooks/useLocalStorage'
-import { AUTHOR_NAME_LOCAL_STORAGE_KEY } from '../constants'
 import RegisterDialog from './RegisterDialog'
 
 interface Props {
@@ -15,7 +14,7 @@ interface Props {
 }
 
 const TranslationField = ({ base, selected, language }: Props) => {
-  const [authorEmail] = useLocalStorage<string>(AUTHOR_NAME_LOCAL_STORAGE_KEY)
+  const { userEmail } = useContext(UserEmailContext)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const [saveSuccess, setSaveSuccess] = useState(false)
@@ -25,7 +24,7 @@ const TranslationField = ({ base, selected, language }: Props) => {
 
   const handleSave = async () => {
     // Check if user email
-    if (!authorEmail) {
+    if (!userEmail) {
       setRegisterDialogOpen(true)
       return
     }
@@ -44,7 +43,7 @@ const TranslationField = ({ base, selected, language }: Props) => {
     // Build request body
     const body: TranslationPostBody = {
       ...base,
-      author: authorEmail,
+      author: userEmail,
       from_repository: false,
       language: language.id,
       file_path: filePath,
