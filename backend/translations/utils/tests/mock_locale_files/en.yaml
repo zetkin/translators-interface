@@ -3,5 +3,12 @@ common:
   error: "There was an error"
   warning: "Be careful!"
   success:
-    form_submit: "Form successfully submitted"
-    update_info: "Information successfully updated"
+    form_submit: >-
+      Multi
+
+      Line
+
+      Text
+    update_info: |-
+      Here are conversations you already have going on. You should complete the calls 
+      or abandon them so that others can call the same people.
