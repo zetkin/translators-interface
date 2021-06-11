@@ -1,0 +1,30 @@
+version: "3"
+volumes:
+  dbdata:
+services:
+  db:
+    image: postgres:13
+    environment:
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+        POSTGRES_USER: ${DB_USER}
+    volumes:
+        - dbdata:/var/lib/postgresql
+  django:
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/var/app
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - 3080:3000
+    volumes:
+      - ./frontend/pages:/var/app/pages
+      - ./frontend/public:/var/app/public
+      - ./frontend/src:/var/app/src
+      - ./frontend/styles:/var/app/styles
