@@ -23,6 +23,7 @@ class Project(models.Model):
     )
     languages = models.ManyToManyField(Language)
     last_sync_time = models.DateTimeField(null=True, blank=True)
+    yaml_indentation = models.IntegerField(null=False, blank=False, default=2)
 
     class Meta:
         unique_together = (
