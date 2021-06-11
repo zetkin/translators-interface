@@ -56,7 +56,10 @@ def generate_locale_files(project: Project, path: str):
     for file_path in translations_files:
         # Create YAML
         yaml_contents = yaml.dump(
-            translations_files[file_path], default_flow_style=False, allow_unicode=True
+            translations_files[file_path],
+            default_flow_style=False,
+            allow_unicode=True,
+            indent=project.yaml_indentation,
         )
         # Write files
         f = open(file_path, "a")
