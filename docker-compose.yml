@@ -13,8 +13,7 @@ services:
     environment:
       ENVIRONMENT: development
       DEBUG: 1
-      DB_USER: translate
-      DB_PASSWORD: password
+      DJANGO_SECRET_KEY: secret_key
       GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
   frontend:
     build:
