@@ -23,7 +23,7 @@ then
         --agree-tos \
         --email info@zetkin.org \
         --domain $APP_DOMAIN \
-        --domain api.$APP_DOMAIN \
+        --domain api.$APP_DOMAIN
 else
     echo "Not using TLS"
 fi
