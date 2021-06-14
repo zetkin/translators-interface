@@ -1,5 +1,7 @@
 export const USER_EMAIL_LOCAL_STORAGE_KEY = 'zetkin_user_email'
 
+export const EN_LANGUAGE_CODE = 'en'
+
 // maps the language code to a flag
 export const COUNTRIES = {
   en: {
