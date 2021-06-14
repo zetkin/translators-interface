@@ -6,4 +6,4 @@ COPY requirements.txt /var/app/requirements.txt
 RUN pip install -r requirements.txt
 
 COPY . /var/app
-CMD python manage.py runserver 0.0.0.0:8000
+CMD ./run.sh
