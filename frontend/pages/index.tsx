@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import dayjs from 'dayjs'
@@ -21,7 +21,7 @@ interface StaticProps {
   projects: Project[]
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async () => {
+export const getServerSideProps: GetServerSideProps<StaticProps> = async () => {
   const projects = await getProjects()
   return { props: { projects } }
 }

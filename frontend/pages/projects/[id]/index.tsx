@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
@@ -26,16 +26,7 @@ type QueryParams = {
   id: string
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const projects = await getProjects()
-
-  return {
-    paths: projects?.map(({ id }) => `/projects/${id}`) ?? [],
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps<StaticProps, QueryParams> = async ({
+export const getServerSideProps: GetServerSideProps<StaticProps, QueryParams> = async ({
   params,
 }) => {
   const project = await getProject(params.id)
