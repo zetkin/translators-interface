@@ -12,10 +12,10 @@ services:
       - sqlite:/var/app/sqlite
     environment:
       ENVIRONMENT: development
+      DEBUG: 1
       DB_USER: translate
       DB_PASSWORD: password
       GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
-      DEBUG: 1
   frontend:
     build:
       context: ./frontend
