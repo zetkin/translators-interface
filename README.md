@@ -6,21 +6,18 @@ Monorepo for the full stack implementation of the Zetkin Translator Interface.
 
 [React Next Frontend](./frontend)
 
-## Running locally for development
-
-There are 2 ways to run in development:
-
-1. Follow the instructions in each directory, and start the local dev environments for each service that way.
-2. Use docker-compose to run everything in docker containers.
-
-### Using docker-compose
+## Running locally for development using docker-compose
 
 Requires:
 
-- Docker
-- docker-compose
+-   Docker
+-   docker-compose
 
 To start the dev environment with docker for the first time:
+
+1. Copy `.env.development-sample` to `.env` and enter API access tokens as needed.
+
+2. Run the following code in the terminal.
 
 ```sh
 # Build and start
@@ -40,26 +37,26 @@ If using docker-compose, you need to update your hosts file at `/etc/hosts` to m
 
 ## Features
 
-- Django Admin
-  - Admin Model Pages
-    - Project
-      - Sync project
-        - Imports translation objects from a project
-      - Export translation files
-        - Download a zip file of the generated YAML locale files for a project with the latest translations.
-      - CRUD operations for project model
-    - Language
-      - CRUD operations for language model
-    - Translation
-      - CRUD operations for translation model
-    - Users
-      - User management for access to the admin interface
-- Web Application
-  - Projects page
-    - View all projects
-    - Click through to project detail and edit translations page
-  - Project detail page
-    - View project details and click through to edit translations page for each language
-  - Edit translations page
-    - Shows the dotpath and "base" translations (always English)
-    - Lists
+-   Django Admin
+    -   Admin Model Pages
+        -   Project
+            -   Sync project
+                -   Imports translation objects from a project
+            -   Export translation files
+                -   Download a zip file of the generated YAML locale files for a project with the latest translations.
+            -   CRUD operations for project model
+        -   Language
+            -   CRUD operations for language model
+        -   Translation
+            -   CRUD operations for translation model
+        -   Users
+            -   User management for access to the admin interface
+-   Web Application
+    -   Projects page
+        -   View all projects
+        -   Click through to project detail and edit translations page
+    -   Project detail page
+        -   View project details and click through to edit translations page for each language
+    -   Edit translations page
+        -   Shows the dotpath and "base" translations (always English)
+        -   Lists
