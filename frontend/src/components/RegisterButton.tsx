@@ -2,12 +2,12 @@ import React, { useState, useContext } from 'react'
 import { fade } from '@material-ui/core/styles'
 
 import theme from '../../styles/theme'
-import { UserEmailContext } from '../../src/contexts/userEmailContext'
+import { UserEmailContext } from '../contexts/userEmailContext'
 
 import RegisterDialog from './RegisterDialog'
 import SignoutDialog from './SignoutDialog'
 
-const EmailField = () => {
+const RegisterButton = () => {
   const { userEmail } = useContext(UserEmailContext)
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false)
   const [signoutDialogOpen, setSignoutDialogOpen] = useState(false)
@@ -50,4 +50,4 @@ const EmailField = () => {
   )
 }
 
-export default EmailField
+export default RegisterButton

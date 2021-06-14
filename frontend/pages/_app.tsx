@@ -8,7 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { AppBar, Toolbar, Typography, Link } from '@material-ui/core'
 
 import theme from '../styles/theme'
-import EmailField from '../src/components/EmailField'
+import RegisterButton from '../src/components/RegisterButton'
 import { UserEmailProvider } from '../src/contexts/userEmailContext'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -43,7 +43,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                   Zetkin Translators Interface
                 </Typography>
               </Link>
-              <EmailField />
+              <RegisterButton />
             </Toolbar>
           </AppBar>
 
