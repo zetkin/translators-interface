@@ -1,6 +1,8 @@
 version: "3"
 volumes:
   dbdata:
+  certs:
+  static:
 services:
   db:
     image: postgres:13
@@ -14,15 +16,12 @@ services:
       context: ./backend
     env_file:
       - ./backend/.env
-    ports:
-      - 8000:8000
     volumes:
       - ./backend:/var/app
+      - static:/var/static
   frontend:
     build:
       context: ./frontend
-    ports:
-      - 3080:3000
     volumes:
       - ./frontend/pages:/var/app/pages
       - ./frontend/public:/var/app/public
@@ -30,3 +29,15 @@ services:
       - ./frontend/styles:/var/app/styles
     environment:
       NODE_ENV: production
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - certs:/etc/certificates
+      - static:/var/static
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      APP_DOMAIN: translate.zetkin.org
+      APP_USE_TLS: ''
