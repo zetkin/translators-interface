@@ -1,14 +1,21 @@
 version: "3"
+volumes:
+  sqlite:
 services:
   django:
     build:
       context: ./backend
-    env_file:
-      - ./backend/.env
     ports:
       - 8000:8000
     volumes:
       - ./backend:/var/app
+      - sqlite:/var/app/sqlite
+    environment:
+      ENVIRONMENT: development
+      DB_USER: translate
+      DB_PASSWORD: password
+      GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
+      DEBUG: 1
   frontend:
     build:
       context: ./frontend

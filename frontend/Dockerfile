@@ -8,6 +8,4 @@ RUN yarn install
 
 COPY . /var/app
 
-RUN yarn build
-
-CMD yarn start
+CMD ./run.sh

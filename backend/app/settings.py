@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+pxk2@z*pgj7c8n+a7e(3cb=o%2j43#od9ald#s=jwa2nxzqpq"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ["django", "localhost","api.translate.zetkin.org"]
 
@@ -81,15 +81,23 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": "db",
-        "NAME": os.environ['DB_USER'],
-        "USER": os.environ['DB_USER'],
-        "PASSWORD": os.environ['DB_PASSWORD'],
-    },
-}
+if config('ENVIRONMENT') == 'production':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": "db",
+            "NAME": config('DB_USER'),
+            "USER": config('DB_USER'),
+            "PASSWORD": config('DB_PASSWORD'),
+        },
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "sqlite/db.sqlite3",
+        }
+    }
 
 
 # Password validation
