@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+pxk2@z*pgj7c8n+a7e(3cb=o%2j43#od9ald#s=jwa2nxzqpq"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ["django", "localhost","api.translate.zetkin.org"]
+ALLOWED_HOSTS = ["django", "localhost", "api.translate.zetkin.org"]
 
 
 # Application definition
@@ -81,14 +81,14 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if config('ENVIRONMENT') == 'production':
+if config("ENVIRONMENT") == "production":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
             "HOST": "db",
-            "NAME": config('DB_USER'),
-            "USER": config('DB_USER'),
-            "PASSWORD": config('DB_PASSWORD'),
+            "NAME": config("DB_USER"),
+            "USER": config("DB_USER"),
+            "PASSWORD": config("DB_PASSWORD"),
         },
     }
 else:
