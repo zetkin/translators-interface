@@ -17,7 +17,9 @@ To start the dev environment with docker for the first time:
 
 1. Copy `.env.development-sample` to `.env` and enter API access tokens as needed.
 
-2. Run the following code in the terminal.
+2. Update your hosts file at `/etc/hosts` to map `django` to 127.0.0.1
+
+3. Run the following code in the terminal.
 
 ```sh
 # Build and start
@@ -32,8 +34,6 @@ docker-compose exec django python manage.py migrate
 # Create a superuser for Django Admin
 docker-compose exec django python manage.py createsuperuser
 ```
-
-If using docker-compose, you need to update your hosts file at `/etc/hosts` to map `django` to 127.0.0.1.
 
 ## Features
 
