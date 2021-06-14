@@ -5,6 +5,12 @@ from translations.models import Project, Translation
 from .filter_latest_translations import filter_latest_translations
 
 
+def str_representer(dumper, data):
+    if len(data.splitlines()) == 1:
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data)
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+
+
 def put(d, keys, item):
     if "." in keys:
         key, rest = keys.split(".", 1)
@@ -16,6 +22,8 @@ def put(d, keys, item):
 
 
 def generate_locale_files(project: Project, path: str):
+    yaml.add_representer(str, str_representer)
+
     # Move working dir to the one provided
     os.chdir(path)
 
