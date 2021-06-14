@@ -14,5 +14,3 @@ ADD run.sh /etc/service/nginx/run
 
 ADD insecure.conf /etc/nginx/sites-templates/
 ADD default.conf /etc/nginx/sites-templates/
-
-RUN mkdir /var/html
