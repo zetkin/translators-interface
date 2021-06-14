@@ -1,8 +1,8 @@
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:focal-1.0.0
 
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update
 RUN apt-get install -y nginx
-RUN apt-get install -y python-pip
+RUN apt-get install -y python3-pip
 RUN apt-get install -y letsencrypt
 
 RUN pip install envtpl

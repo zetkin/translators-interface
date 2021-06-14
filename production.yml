@@ -14,10 +14,12 @@ services:
   django:
     build:
       context: ./backend
-    env_file:
-      - ./backend/.env
     volumes:
       - static:/var/static
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
   frontend:
     build:
       context: ./frontend
@@ -34,4 +36,4 @@ services:
       - 443:443
     environment:
       APP_DOMAIN: translate.zetkin.org
-      APP_USE_TLS: ''
+      APP_USE_TLS: ${APP_USE_TLS}
