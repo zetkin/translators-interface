@@ -21,7 +21,10 @@ class Project(models.Model):
         unique=False,
         help_text="Path to the locale files within the project. Do not include leading or trailing slashes. Example: 'src/locale'.",
     )
-    languages = models.ManyToManyField(Language)
+    languages = models.ManyToManyField(
+        Language,
+        help_text="Make sure to always select English, and any other translations in this project.",
+    )
     last_sync_time = models.DateTimeField(null=True, blank=True)
     yaml_indentation = models.IntegerField(null=False, blank=False, default=2)
 
