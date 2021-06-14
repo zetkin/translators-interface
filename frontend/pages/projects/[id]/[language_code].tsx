@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import classnames from 'classnames'
 
@@ -26,25 +26,8 @@ interface StaticProps {
   selectedLanguage: Language
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const projects = await getProjects()
 
-  const paths = projects.reduce((acc, project) => {
-    return [
-      ...acc,
-      ...project.languages.map(
-        (language) => `/projects/${project.id}/${language.language_code}`
-      ),
-    ]
-  }, [])
-
-  return {
-    paths,
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
   StaticProps,
   { id: string; language_code: string }
 > = async ({ params }) => {

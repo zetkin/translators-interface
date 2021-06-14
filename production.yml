@@ -1,0 +1,42 @@
+version: "3"
+volumes:
+  dbdata:
+  certs:
+  static:
+services:
+  db:
+    image: postgres:13
+    environment:
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+        POSTGRES_USER: ${DB_USER}
+    volumes:
+        - dbdata:/var/lib/postgresql
+  django:
+    build:
+      context: ./backend
+    volumes:
+      - static:/var/static
+    environment:
+      ENVIRONMENT: production
+      DEBUG: 0
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      NODE_ENV: production
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - certs:/etc/certificates
+      - static:/var/static
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      APP_DOMAIN: translate.zetkin.org
+      APP_USE_TLS: ${APP_USE_TLS}
