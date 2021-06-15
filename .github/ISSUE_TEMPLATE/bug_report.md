@@ -9,14 +9,14 @@ assignees: ''
 
 **Please be as thorough as possible, but if you can't answer everything, please just submit what you have! Thank you!**
 
-## Description of bug
+### Description of bug
 
 
-## Steps to reproduce
+### Steps to reproduce
 1. Go to '...'
 2. Click on '....'
 
-## Expected Behaviour
+### Expected Behaviour
 
 
-## Screenshots (if you have any)
+### Screenshots (if you have any)
