@@ -1,15 +1,26 @@
-.gridCell {
-  height: 100%;
-  width: 100%;
-  padding: 10px;
-  border-bottom: 1px solid lightslategray;
-  display: flex;
-  align-items: center;
-}
-
 .gridHeaderCell {
   font-size: 1.2em;
   padding: 20px 10px;
   height: 100%;
-  border-bottom: 2px solid lightslategray;
+  border-bottom: 2px solid #666 !important;
+}
+
+.gridCell {
+  height: 100%;
+  width: 100%;
+  padding: 8px;
+  border-bottom: 1px solid #666;
+  display: flex;
+  align-items: center;
+}
+
+.baseTranslationCell {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.baseTranslationCell > code {
+  font-size: 0.9em;
+  margin-bottom: 4px;
+  color: #777;
 }

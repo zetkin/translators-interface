@@ -26,7 +26,6 @@ interface StaticProps {
   selectedLanguage: Language
 }
 
-
 export const getServerSideProps: GetServerSideProps<
   StaticProps,
   { id: string; language_code: string }
@@ -99,16 +98,11 @@ const ProjectPage: NextPage<StaticProps> = ({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'auto 1fr 1fr',
+              gridTemplateColumns: '1fr 1fr',
               gridTemplateRows: 'auto',
               alignItems: 'center',
             }}
           >
-            <div className={classnames(style.gridCell, style.gridHeaderCell)}>
-              <b>
-                <code>Dotpath</code>
-              </b>
-            </div>
             <div className={classnames(style.gridCell, style.gridHeaderCell)}>
               <b>English</b>
             </div>
@@ -119,10 +113,13 @@ const ProjectPage: NextPage<StaticProps> = ({
             {joinedTranslations.map((joinedTranslation) => {
               return (
                 <>
-                  <div className={style.gridCell}>
+                  <div
+                    className={classnames(
+                      style.gridCell,
+                      style.baseTranslationCell
+                    )}
+                  >
                     <code>{joinedTranslation.english.dotpath}</code>
-                  </div>
-                  <div className={style.gridCell}>
                     <span style={{ whiteSpace: 'pre-line', fontSize: '1rem' }}>
                       {joinedTranslation.english.text}
                     </span>
