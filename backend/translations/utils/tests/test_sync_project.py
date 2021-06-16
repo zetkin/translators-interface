@@ -62,6 +62,19 @@ class SyncProjectTestCase(TestCase):
         )
 
     def test_handle_deleted_translations(self):
+        """
+        This is unfortunately a somewhat fragile test case because it depends on
+        remote content that would be too complicated to mock.
+
+        In order for this test to work, or if you need to change it, the mock
+        translation files MUST be pushed to master. The sync only supports
+        getting the repo data from master. IF THIS CHANGES, PLEASE UPDATE
+         THIS DOCSTRING.
+
+        Assumptions in test case:
+            * All files have had new commits since the last sync.
+
+        """
         # Sync project in current state
         sync_project(self.project)
         # Change locale files path to deleted, to mock deleted files
@@ -71,4 +84,35 @@ class SyncProjectTestCase(TestCase):
         self.project.save()
         # Sync project again
         sync_project(self.project)
-        # Check that the deleted translations are marked as deleted
+
+        # Check files that weren't deleted synced twice
+        english_synced_translations = Translation.objects.filter(file_path="./en.yaml")
+        swedish_synced_translations = Translation.objects.filter(file_path="./sv.yaml")
+
+        self.assertEqual(english_synced_translations.count(), 10)
+        self.assertEqual(swedish_synced_translations.count(), 10)
+
+        # Assert all translations that would haven't been deleted have no "deleted_at"
+        for translation in english_synced_translations:
+            self.assertIsNone(translation.deleted_at)
+
+        for translation in swedish_synced_translations:
+            self.assertIsNone(translation.deleted_at)
+
+        # Check files that were deleted only have synced once
+        english_deleted_translations = Translation.objects.filter(
+            file_path="./home_page/en.yaml"
+        )
+        swedish_deleted_translations = Translation.objects.filter(
+            file_path="./home_page/sv.yaml"
+        )
+
+        self.assertEqual(english_deleted_translations.count(), 3)
+        self.assertEqual(swedish_deleted_translations.count(), 3)
+
+        # Assert all translations that would have been deleted are marked
+        for translation in english_deleted_translations:
+            self.assertIsNotNone(translation.deleted_at)
+
+        for translation in swedish_deleted_translations:
+            self.assertIsNotNone(translation.deleted_at)
