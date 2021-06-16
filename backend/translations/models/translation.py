@@ -13,6 +13,7 @@ class Translation(models.Model):
     author = models.CharField(max_length=64, blank=False, null=False)
     from_repository = models.BooleanField(null=False, blank=False)
     created_at = models.DateTimeField(null=False, blank=False, default=now)
+    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
     # Relationship to repo
     file_path = models.CharField(
         max_length=128,
