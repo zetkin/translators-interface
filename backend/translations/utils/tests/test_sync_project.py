@@ -60,3 +60,15 @@ class SyncProjectTestCase(TestCase):
         self.assertEqual(
             swedish_home_page_header_title.text, "Redigera översättningar här"
         )
+
+    def test_handle_deleted_translations(self):
+        # Sync project in current state
+        sync_project(self.project)
+        # Change locale files path to deleted, to mock deleted files
+        self.project.locale_files_path = (
+            "backend/translations/utils/tests/mock_files/handle_deleted_translations"
+        )
+        self.project.save()
+        # Sync project again
+        sync_project(self.project)
+        # Check that the deleted translations are marked as deleted
