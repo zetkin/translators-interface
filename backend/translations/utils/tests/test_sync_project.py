@@ -19,7 +19,7 @@ class SyncTestCase(TestCase):
         self.project = ProjectFactory(
             name="Test Git Project",
             repository_name="zetkin/translators-interface",
-            locale_files_path="backend/translations/utils/tests/mock_locale_files",
+            locale_files_path="backend/translations/utils/tests/mock_files/sync_projec",
             languages=(english, swedish),
         )
 
