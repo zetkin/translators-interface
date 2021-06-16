@@ -1,0 +1,7 @@
+site_name: "Translators Interface"
+common:
+    error: "There was an error"
+    warning: "Be careful!"
+    success:
+        form_submit: "Form successfully submitted"
+        update_info: "Information successfully updated"
