@@ -1,14 +1,14 @@
-site_name: "Translators Interface"
+site_name: "Translators Interface 2!"
 common:
-  error: "There was an error"
-  warning: "Be careful!"
-  success:
-    form_submit: >-
-      Multi
+    error: "There was an error"
+    warning: "Be careful!"
+    success:
+        form_submit: >-
+            Multi
 
-      Line
+            Line
 
-      Text
-    update_info: |-
-      Here are conversations you already have going on. You should complete the calls 
-      or abandon them so that others can call the same people.
+            Text
+        update_info: |-
+            Here are conversations you already have going on. You should complete the calls 
+            or abandon them so that others can call the same people.
