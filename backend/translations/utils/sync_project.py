@@ -7,8 +7,8 @@ from pandas import json_normalize
 from yaml.loader import BaseLoader
 from yaml import scanner
 
-
 from translations.models import Project, Language, Translation
+from .filter_latest_translations import filter_latest_translations
 
 """
 Syncing the Translation objects with the git repo for a project.
@@ -18,11 +18,18 @@ localisation files for languages that are configured.
 
 
 def sync_project(project: Project):
+    sync_time = now()
+
     GITHUB_ACCESS_TOKEN = config("GITHUB_ACCESS_TOKEN")
     # Access git repo for project
     g = Github(GITHUB_ACCESS_TOKEN)
     repo = g.get_repo(project.repository_name)
     contents = repo.get_contents(project.locale_files_path)
+
+    # Get previous translations
+    previous_translations = filter_latest_translations(
+        Translation.objects.filter(project=project)
+    )
 
     # Get all files recursively from the repo
     files = []
@@ -69,6 +76,19 @@ def sync_project(project: Project):
             except scanner.ScannerError:
                 pass
 
+    # Handle deleted translations
+    for old_translation in previous_translations:
+        # Get the latest translation with the old translation details
+        latest_translation = Translation.objects.filter(
+            file_path=old_translation.file_path,
+            object_path=old_translation.object_path,
+            project=project,
+        ).order_by("-created_at")[0]
+        # If the latest translation is not newer than the old translation, mark the old translation as deleted
+        if not latest_translation.created_at > old_translation.created_at:
+            old_translation.deleted_at = sync_time
+            old_translation.save()
+
     # When done, set the time the sync occurred
-    project.last_sync_time = now()
+    project.last_sync_time = sync_time
     project.save()

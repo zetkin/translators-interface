@@ -110,7 +110,7 @@ class SyncProjectTestCase(TestCase):
         self.assertEqual(english_deleted_translations.count(), 3)
         self.assertEqual(swedish_deleted_translations.count(), 3)
 
-        # Assert all translations that would have been deleted are marked
+        # Assert all translations that have been deleted are marked
         for translation in english_deleted_translations:
             self.assertIsNotNone(translation.deleted_at)
 
