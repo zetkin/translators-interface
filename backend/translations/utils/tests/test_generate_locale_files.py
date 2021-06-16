@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.timezone import now
 import os, logging, shutil, yaml
 from pandas import json_normalize
 from yaml import Loader
@@ -48,6 +49,10 @@ class GenerateLocalFilesTestCase(TestCase):
                         header
                         # NO SUBHEADER
                 
+        Deletions
+            Deleted translation at `home.content.p` 
+                - Both English and Swedish. 
+                - These translations should not be generated
         """
         TranslationFactory(
             file_path="./en.yaml", object_path="author", language=self.english
@@ -69,6 +74,12 @@ class GenerateLocalFilesTestCase(TestCase):
             object_path="content.subheader",
             language=self.english,
         )
+        TranslationFactory(
+            file_path="./home/en.yaml",
+            object_path="content.p",
+            language=self.english,
+            deleted_at=now(),
+        )
 
         TranslationFactory(
             file_path="./home/sv.yaml", object_path="title", language=self.swedish
@@ -77,6 +88,12 @@ class GenerateLocalFilesTestCase(TestCase):
             file_path="./home/sv.yaml",
             object_path="content.header",
             language=self.swedish,
+        )
+        TranslationFactory(
+            file_path="./home/sv.yaml",
+            object_path="content.p",
+            language=self.swedish,
+            deleted_at=now(),
         )
 
         # Delete folder before each test
@@ -104,8 +121,13 @@ class GenerateLocalFilesTestCase(TestCase):
                 flat_file_object = json_normalize(yaml_contents, sep=".").to_dict(
                     orient="records"
                 )[0]
-                # Check that the YAML file contains the selected translation at the correct object path
-                self.assertEqual(flat_file_object[t.object_path], t.text)
+                # If translation has not been deleted
+                if not t.deleted_at:
+                    # Check that the YAML file contains the selected translation at the correct object path
+                    self.assertEqual(flat_file_object[t.object_path], t.text)
+                else:  # Translation has been deleted
+                    # Check it does not exist in file
+                    self.assertTrue(t.object_path not in flat_file_object)
 
     def test_yaml_indentation(self):
         # Set indentation for 4
