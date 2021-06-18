@@ -45,44 +45,47 @@ const RegisterDialog = ({ open, onClose }: Props) => {
           </Typography>
 
           <Divider style={{ margin: '15px 0 20px 0' }} />
-
-          <TextField
-            style={{ width: '100%' }}
-            variant="outlined"
-            label="Your email address"
-            color="secondary"
-            defaultValue={value || ''}
-            onChange={(e) => {
-              // Set current value
-              setValue(e.target.value)
-              // Check if error
-              setError(!isEmail(e.target.value))
+          <form
+            onSubmit={() => {
+              setUserEmail(value)
+              setValue('')
+              onClose()
             }}
-          />
-          <Tooltip
-            title="Email address not valid"
-            disableFocusListener
-            disableHoverListener
-            disableTouchListener
-            arrow
-            open={error}
           >
-            <Button
-              disabled={error || !value?.length}
-              variant="contained"
+            <TextField
+              style={{ width: '100%' }}
+              variant="outlined"
+              label="Your email address"
               color="secondary"
-              fullWidth
-              style={{ marginTop: 10 }}
-              value={value}
-              onClick={() => {
-                setUserEmail(value)
-                setValue('')
-                onClose()
+              defaultValue={value || ''}
+              onChange={(e) => {
+                // Set current value
+                setValue(e.target.value)
+                // Check if error
+                setError(!isEmail(e.target.value))
               }}
+            />
+            <Tooltip
+              title="Email address not valid"
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+              arrow
+              open={error}
             >
-              Submit
-            </Button>
-          </Tooltip>
+              <Button
+                type="submit"
+                disabled={error || !value?.length}
+                variant="contained"
+                color="secondary"
+                fullWidth
+                style={{ marginTop: 10 }}
+                value={value}
+              >
+                Submit
+              </Button>
+            </Tooltip>
+          </form>
         </Paper>
       </Container>
     </Modal>
