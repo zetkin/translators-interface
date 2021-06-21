@@ -28,7 +28,7 @@ def sync_project(project: Project):
 
     # Get previous translations
     previous_translations = filter_latest_translations(
-        Translation.objects.filter(project=project), include_deleted=False
+        Translation.objects.filter(project=project)
     )
 
     # Collect all translations in project, to check which translations are removed

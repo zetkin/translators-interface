@@ -4,7 +4,7 @@ from translations.models.translation import Translation
 
 
 def filter_latest_translations(
-    translations_qs: QuerySet[Translation], include_deleted=True
+    translations_qs: QuerySet[Translation], include_deleted=False
 ) -> QuerySet[Translation]:
 
     translations_hashmap = {}
@@ -32,7 +32,7 @@ def filter_latest_translations(
                 language=language,
             )
 
-            # If include deleted is false (exclude deleted true), then filter out deleted translations
+            # If include deleted is false, then filter out deleted translations
             if not include_deleted:
                 translations = translations.exclude(deleted_at__isnull=False)
 

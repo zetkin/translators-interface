@@ -29,9 +29,7 @@ def generate_locale_files(project: Project, path: str):
 
     # Get all latest translations for project
     project_translations = Translation.objects.filter(project=project)
-    latest_project_translations = filter_latest_translations(
-        project_translations, include_deleted=False
-    )
+    latest_project_translations = filter_latest_translations(project_translations)
 
     # Create file structure
     for translation in latest_project_translations:
