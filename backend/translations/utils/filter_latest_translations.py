@@ -32,7 +32,7 @@ def filter_latest_translations(
                 language=language,
             )
 
-            # If exclude deleted, then exclude deleted translations
+            # If include deleted is false (exclude deleted true), then filter out deleted translations
             if not include_deleted:
                 translations = translations.exclude(deleted_at__isnull=False)
 

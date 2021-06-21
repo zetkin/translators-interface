@@ -30,6 +30,8 @@ def sync_project(project: Project):
     previous_translations = filter_latest_translations(
         Translation.objects.filter(project=project)
     )
+    # Collect all translations in project, to check which translations are removed
+    all_translations_in_project = {}
 
     # Get all files recursively from the repo
     files = []
@@ -43,6 +45,8 @@ def sync_project(project: Project):
     for file in files:
         # The file path relative to the locale files directory for the project
         relative_filepath = file.path.replace(project.locale_files_path, ".")
+
+        all_translations_in_project[relative_filepath] = {}
         # Get language
         language_code = relative_filepath.split("/")[-1].split(".")[0]
         # Get commit date for file
@@ -60,7 +64,7 @@ def sync_project(project: Project):
                     if isinstance(value, str):
                         language = Language.objects.get(language_code=language_code)
                         try:
-                            translation = Translation.objects.create(
+                            translation = Translation(
                                 text=value,
                                 author="",
                                 from_repository=True,
@@ -70,24 +74,35 @@ def sync_project(project: Project):
                                 language=language,
                                 created_at=commit_date,
                             )
-                        # If translation with file_path, object_path & created_at exists
+
+                            # Add translation to all translations in project
+                            all_translations_in_project[relative_filepath][
+                                key
+                            ] = translation
+
+                            # Attempt to create translation, will be ignored if translation already in project
+                            translation.save()
+                        # If translation with file_path, object_path & created_at exists, ignore save
                         except IntegrityError:
                             pass
             except scanner.ScannerError:
                 pass
 
     # Handle deleted translations
-    for old_translation in previous_translations:
-        # Get the latest translation with the old translation details
-        latest_translation = Translation.objects.filter(
-            file_path=old_translation.file_path,
-            object_path=old_translation.object_path,
-            project=project,
-        ).order_by("-created_at")[0]
-        # If the latest translation is not newer than the old translation, mark the old translation as deleted
-        if not latest_translation.created_at > old_translation.created_at:
-            old_translation.deleted_at = sync_time
-            old_translation.save()
+    for translation in previous_translations:
+        # If previous translation not in the current translations
+        if (
+            not translation.file_path in all_translations_in_project
+            or not translation.object_path
+            in all_translations_in_project[relative_filepath]
+        ):
+            # Mark all translations from previous translation as deleted
+            deleted_translations = Translation.objects.filter(
+                file_path=translation.file_path, object_path=translation.object_path
+            )
+            for deleted_translation in deleted_translations:
+                deleted_translation.deleted_at = sync_time
+                deleted_translation.save()
 
     # When done, set the time the sync occurred
     project.last_sync_time = sync_time
