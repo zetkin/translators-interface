@@ -92,9 +92,9 @@ def sync_project(project: Project):
     for translation in previous_translations:
         # If previous translation not in the current translations
         if (
-            not translation.file_path in all_translations_in_project
-            or not translation.object_path
-            in all_translations_in_project[relative_filepath]
+            translation.file_path not in all_translations_in_project
+            or translation.object_path
+            not in all_translations_in_project[relative_filepath]
         ):
             # Mark all translations from previous translation as deleted
             deleted_translations = Translation.objects.filter(
