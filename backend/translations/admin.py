@@ -77,8 +77,18 @@ class TranslationAdmin(admin.ModelAdmin):
         "dotpath",
         "language",
         "created_at",
+        "is_deleted",
     )
     list_filter = ["language", "project"]
+    search_fields = [
+        "object_path",
+        "file_path",
+    ]
+
+    def is_deleted(self, obj: Translation):
+        return obj.deleted_at is not None
+
+    is_deleted.boolean = True
 
 
 admin.site.register(Translation, TranslationAdmin)
