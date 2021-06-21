@@ -9,7 +9,7 @@ from translations.models.factories import (
 from translations.utils.sync_project import sync_project
 
 
-class SyncTestCase(TestCase):
+class SyncProjectTestCase(TestCase):
     def setUp(self):
         logging.disable(logging.CRITICAL)
 
@@ -19,7 +19,7 @@ class SyncTestCase(TestCase):
         self.project = ProjectFactory(
             name="Test Git Project",
             repository_name="zetkin/translators-interface",
-            locale_files_path="backend/translations/utils/tests/mock_locale_files",
+            locale_files_path="backend/translations/utils/tests/mock_files/sync_project",
             languages=(english, swedish),
         )
 

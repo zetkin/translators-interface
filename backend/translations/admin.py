@@ -78,6 +78,7 @@ class TranslationAdmin(admin.ModelAdmin):
         "language",
         "created_at",
     )
+    list_filter = ["language", "project"]
 
 
 admin.site.register(Translation, TranslationAdmin)
