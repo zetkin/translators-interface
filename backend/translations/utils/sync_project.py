@@ -30,6 +30,7 @@ def sync_project(project: Project):
     previous_translations = filter_latest_translations(
         Translation.objects.filter(project=project), include_deleted=False
     )
+
     # Collect all translations in project, to check which translations are removed
     all_translations_in_project = {}
 
@@ -94,7 +95,7 @@ def sync_project(project: Project):
         if (
             translation.file_path not in all_translations_in_project
             or translation.object_path
-            not in all_translations_in_project[relative_filepath]
+            not in all_translations_in_project[translation.file_path]
         ):
             # Mark all translations from previous translation as deleted
             deleted_translations = Translation.objects.filter(
