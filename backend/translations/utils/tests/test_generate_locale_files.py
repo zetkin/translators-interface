@@ -74,12 +74,6 @@ class GenerateLocalFilesTestCase(TestCase):
             object_path="content.subheader",
             language=self.english,
         )
-        TranslationFactory(
-            file_path="./home/en.yaml",
-            object_path="content.p",
-            language=self.english,
-            deleted_at=now(),
-        )
 
         TranslationFactory(
             file_path="./home/sv.yaml", object_path="title", language=self.swedish
@@ -88,6 +82,14 @@ class GenerateLocalFilesTestCase(TestCase):
             file_path="./home/sv.yaml",
             object_path="content.header",
             language=self.swedish,
+        )
+
+        # Deleted Translations
+        TranslationFactory(
+            file_path="./home/en.yaml",
+            object_path="content.p",
+            language=self.english,
+            deleted_at=now(),
         )
         TranslationFactory(
             file_path="./home/sv.yaml",
