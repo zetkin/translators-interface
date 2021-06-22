@@ -94,6 +94,10 @@ class TranslationAdmin(admin.ModelAdmin):
         "object_path",
         "file_path",
     ]
+    readonly_fields = (
+        "created_at",
+        "deleted_at",
+    )
 
     def is_deleted(self, obj: Translation):
         return obj.deleted_at is not None
