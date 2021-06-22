@@ -1,4 +1,5 @@
 import yaml
+from typing import Dict
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
 from decouple import config
@@ -9,15 +10,16 @@ from yaml import scanner
 
 from translations.models import Project, Language, Translation
 from .filter_latest_translations import filter_latest_translations
-
-"""
-Syncing the Translation objects with the git repo for a project.
-This function creates Translation records for every key in a project's
-localisation files for languages that are configured.
-"""
+from .mark_deleted_translations import mark_deleted_translations
 
 
 def sync_project(project: Project):
+    """
+    Syncing the Translation objects with the git repo for a project.
+    This function creates Translation records for every key in a project's
+    localisation files for languages that are configured.
+    """
+
     sync_time = now()
 
     GITHUB_ACCESS_TOKEN = config("GITHUB_ACCESS_TOKEN")
@@ -32,7 +34,7 @@ def sync_project(project: Project):
     )
 
     # Collect all translations in project, to check which translations are removed
-    all_translations_in_project = {}
+    all_translations_in_project: Dict[str, Dict[str, Translation]] = {}
 
     # Get all files recursively from the repo
     files = []
@@ -46,7 +48,7 @@ def sync_project(project: Project):
     for file in files:
         # The file path relative to the locale files directory for the project
         relative_filepath = file.path.replace(project.locale_files_path, ".")
-
+        # Add file path to all translations dict
         all_translations_in_project[relative_filepath] = {}
         # Get language
         language_code = relative_filepath.split("/")[-1].split(".")[0]
@@ -89,21 +91,9 @@ def sync_project(project: Project):
             except scanner.ScannerError:
                 pass
 
-    # Handle deleted translations
-    for translation in previous_translations:
-        # If previous translation not in the current translations
-        if (
-            translation.file_path not in all_translations_in_project
-            or translation.object_path
-            not in all_translations_in_project[translation.file_path]
-        ):
-            # Mark all translations from previous translation as deleted
-            deleted_translations = Translation.objects.filter(
-                file_path=translation.file_path, object_path=translation.object_path
-            )
-            for deleted_translation in deleted_translations:
-                deleted_translation.deleted_at = sync_time
-                deleted_translation.save()
+    mark_deleted_translations(
+        previous_translations, all_translations_in_project, sync_time
+    )
 
     # When done, set the time the sync occurred
     project.last_sync_time = sync_time
