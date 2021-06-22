@@ -1,14 +1,9 @@
-import os
 import logging
-import shutil
-import tempfile
-from distutils.dir_util import copy_tree
 
 from django.test import TestCase
 
-from translations.models import Translation, Language, Project
+from translations.models import Translation
 from translations.models.factories import (
-    TranslationFactory,
     ProjectFactory,
     LanguageFactory,
 )
