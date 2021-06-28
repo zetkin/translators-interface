@@ -3,6 +3,7 @@ import tempfile
 import shutil
 from django.contrib import admin, messages
 from django.http import HttpResponse
+from django.utils.html import format_html
 
 from .models import Project, Language, Translation
 from .utils.sync_project import sync_project
@@ -19,10 +20,19 @@ admin.site.register(Language, LanguageAdmin)
 
 # Project
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("name", "repository_name", "last_sync_time")
+    list_display = ("name", "repository_name", "last_sync_time", "translations")
     readonly_fields = ["last_sync_time"]
 
     actions = ["sync", "export_translations"]
+
+    def translations(self, obj: Project):
+        """
+        Link to all translations for project
+        """
+        return format_html(
+            '<a href="/admin/translations/translation/?project__id__exact={}">Translations</a>',
+            obj.id,
+        )
 
     @admin.action(description="Sync translations")
     def sync(self, request, queryset):
@@ -77,8 +87,22 @@ class TranslationAdmin(admin.ModelAdmin):
         "dotpath",
         "language",
         "created_at",
+        "is_deleted",
     )
     list_filter = ["language", "project"]
+    search_fields = [
+        "object_path",
+        "file_path",
+    ]
+    readonly_fields = (
+        "created_at",
+        "deleted_at",
+    )
+
+    def is_deleted(self, obj: Translation):
+        return obj.deleted_at is not None
+
+    is_deleted.boolean = True
 
 
 admin.site.register(Translation, TranslationAdmin)

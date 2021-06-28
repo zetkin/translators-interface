@@ -1,8 +1,9 @@
-from django.test import TestCase
 import logging
-from translations.models import Translation, Language, Project
+
+from django.test import TestCase
+
+from translations.models import Translation
 from translations.models.factories import (
-    TranslationFactory,
     ProjectFactory,
     LanguageFactory,
 )

@@ -1,4 +1,5 @@
 import yaml
+from typing import Dict
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
 from decouple import config
@@ -7,22 +8,33 @@ from pandas import json_normalize
 from yaml.loader import BaseLoader
 from yaml import scanner
 
-
 from translations.models import Project, Language, Translation
-
-"""
-Syncing the Translation objects with the git repo for a project.
-This function creates Translation records for every key in a project's
-localisation files for languages that are configured.
-"""
+from .filter_latest_translations import filter_latest_translations
+from .mark_deleted_translations import mark_deleted_translations
 
 
 def sync_project(project: Project):
+    """
+    Syncing the Translation objects with the git repo for a project.
+    This function creates Translation records for every key in a project's
+    localisation files for languages that are configured.
+    """
+
+    sync_time = now()
+
     GITHUB_ACCESS_TOKEN = config("GITHUB_ACCESS_TOKEN")
     # Access git repo for project
     g = Github(GITHUB_ACCESS_TOKEN)
     repo = g.get_repo(project.repository_name)
     contents = repo.get_contents(project.locale_files_path)
+
+    # Get previous translations
+    previous_translations = filter_latest_translations(
+        Translation.objects.filter(project=project)
+    )
+
+    # Collect all translations in project, to check which translations are removed
+    all_translations_in_project: Dict[str, Dict[str, Translation]] = {}
 
     # Get all files recursively from the repo
     files = []
@@ -36,6 +48,8 @@ def sync_project(project: Project):
     for file in files:
         # The file path relative to the locale files directory for the project
         relative_filepath = file.path.replace(project.locale_files_path, ".")
+        # Add file path to all translations dict
+        all_translations_in_project[relative_filepath] = {}
         # Get language
         language_code = relative_filepath.split("/")[-1].split(".")[0]
         # Get commit date for file
@@ -53,7 +67,7 @@ def sync_project(project: Project):
                     if isinstance(value, str):
                         language = Language.objects.get(language_code=language_code)
                         try:
-                            translation = Translation.objects.create(
+                            translation = Translation(
                                 text=value,
                                 author="",
                                 from_repository=True,
@@ -63,12 +77,24 @@ def sync_project(project: Project):
                                 language=language,
                                 created_at=commit_date,
                             )
-                        # If translation with file_path, object_path & created_at exists
+
+                            # Add translation to all translations in project
+                            all_translations_in_project[relative_filepath][
+                                key
+                            ] = translation
+
+                            # Attempt to create translation, will be ignored if translation already in project
+                            translation.save()
+                        # If translation with file_path, object_path & created_at exists, ignore save
                         except IntegrityError:
                             pass
             except scanner.ScannerError:
                 pass
 
+    mark_deleted_translations(
+        previous_translations, all_translations_in_project, sync_time
+    )
+
     # When done, set the time the sync occurred
-    project.last_sync_time = now()
+    project.last_sync_time = sync_time
     project.save()

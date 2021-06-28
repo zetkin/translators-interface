@@ -4,7 +4,7 @@ from translations.models.translation import Translation
 
 
 def filter_latest_translations(
-    translations_qs: QuerySet[Translation],
+    translations_qs: QuerySet[Translation], include_deleted=False
 ) -> QuerySet[Translation]:
 
     translations_hashmap = {}
@@ -27,7 +27,14 @@ def filter_latest_translations(
             translations_hashmap[project.id][language.language_code] = {}
 
             # Get translations for project and language
-            translations = translations_qs.filter(project=project, language=language)
+            translations = translations_qs.filter(
+                project=project,
+                language=language,
+            )
+
+            # If include deleted is false, then filter out deleted translations
+            if not include_deleted:
+                translations = translations.exclude(deleted_at__isnull=False)
 
             for translation in translations:
                 # If translation not yet in hashmap
