@@ -59,6 +59,9 @@ def sync_project(project: Project):
         if language_code in [lang.language_code for lang in project.languages.all()]:
             try:
                 file_object = yaml.load(file.decoded_content, Loader=BaseLoader)
+                if file_object is None:
+                    continue
+
                 flat_file_object = json_normalize(
                     file_object, sep=".", errors="ignore"
                 ).to_dict(orient="records")[0]
