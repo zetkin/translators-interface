@@ -9,11 +9,13 @@ services:
     environment:
         POSTGRES_PASSWORD: ${DB_PASSWORD}
         POSTGRES_USER: ${DB_USER}
+    restart: always
     volumes:
         - dbdata:/var/lib/postgresql
   django:
     build:
       context: ./backend
+    restart: always
     volumes:
       - static:/var/static
     environment:
@@ -28,9 +30,11 @@ services:
       context: ./frontend
     environment:
       NODE_ENV: production
+    restart: always
   nginx:
     build:
       context: ./nginx
+    restart: always
     volumes:
       - certs:/etc/certificates
       - static:/var/static
